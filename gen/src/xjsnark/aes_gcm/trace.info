@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<debug-info>
+  <concept fqn="jetbrains.mps.baseLanguage.structure.BlockStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.BreakStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.ExpressionStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.ForStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.IfStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.LocalVariableDeclarationStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.ReturnStatement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.SingleLineComment" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.Statement" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.StaticFieldDeclaration" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.StaticMethodDeclaration" />
+  <concept fqn="jetbrains.mps.baseLanguage.structure.WhileStatement" />
+  <root nodeRef="r:1e4e7e47-5204-4166-a233-48cf8c81db83(xjsnark.aes_gcm)/3255992103309134499">
+    <file name="AES_GCM.java">
+      <node id="7749765820628342210" at="23,97,24,151" concept="5" />
+      <node id="7749765820628342219" at="24,151,25,0" concept="8" />
+      <node id="7749765820628342222" at="26,34,27,35" concept="2" />
+      <node id="7749765820628342238" at="28,5,29,0" concept="8" />
+      <node id="7749765820628342241" at="30,35,31,182" concept="2" />
+      <node id="7749765820628342269" at="32,5,33,0" concept="8" />
+      <node id="7749765820628342270" at="33,0,34,20" concept="6" />
+      <node id="1437502540628927392" at="38,85,39,83" concept="6" />
+      <node id="7749765820628314998" at="47,157,48,40" concept="5" />
+      <node id="7749765820628315004" at="48,40,49,0" concept="8" />
+      <node id="7749765820628315005" at="49,0,50,43" concept="5" />
+      <node id="7749765820628315011" at="50,43,51,0" concept="8" />
+      <node id="7749765820628315012" at="51,0,52,164" concept="5" />
+      <node id="7749765820628315021" at="52,164,53,0" concept="8" />
+      <node id="7749765820628315022" at="53,0,54,41" concept="5" />
+      <node id="7749765820628315031" at="55,33,56,22" concept="2" />
+      <node id="7749765820628315040" at="57,5,58,0" concept="8" />
+      <node id="7749765820628315043" at="58,0,59,70" concept="5" />
+      <node id="7749765820628315051" at="59,70,60,0" concept="8" />
+      <node id="7749765820628315065" at="60,0,61,124" concept="2" />
+      <node id="7749765820628315071" at="61,124,62,0" concept="8" />
+      <node id="7749765820628315075" at="62,0,63,51" concept="5" />
+      <node id="1437502540628858721" at="63,51,64,0" concept="8" />
+      <node id="1437502540628860377" at="64,0,65,58" concept="7" />
+      <node id="1437502540628764816" at="65,58,66,0" concept="8" />
+      <node id="7749765820628315082" at="66,0,67,151" concept="5" />
+      <node id="7749765820628315091" at="67,151,68,151" concept="5" />
+      <node id="7749765820628315101" at="68,151,69,148" concept="5" />
+      <node id="7749765820628322441" at="69,148,70,0" concept="8" />
+      <node id="1437502540628781357" at="71,42,72,0" concept="8" />
+      <node id="7749765820628315112" at="72,0,73,101" concept="2" />
+      <node id="1437502540628781690" at="73,101,74,0" concept="8" />
+      <node id="7749765820628315118" at="74,0,75,76" concept="5" />
+      <node id="7749765820628315125" at="75,76,76,0" concept="8" />
+      <node id="7749765820628315126" at="76,0,77,46" concept="2" />
+      <node id="7749765820628315132" at="77,46,78,0" concept="8" />
+      <node id="7749765820628315179" at="79,5,80,0" concept="8" />
+      <node id="7749765820628315180" at="80,0,81,71" concept="6" />
+      <node id="1437502540628886721" at="85,125,86,94" concept="6" />
+      <node id="3255992103382030939" at="90,126,91,56" concept="6" />
+      <node id="7749765820628303639" at="95,158,96,72" concept="6" />
+      <node id="1437502540629023096" at="103,198,104,0" concept="8" />
+      <node id="894673071893676876" at="104,0,105,158" concept="5" />
+      <node id="1437502540629023862" at="105,158,106,0" concept="8" />
+      <node id="1437502540629024577" at="106,0,107,56" concept="7" />
+      <node id="894673071893682198" at="107,56,108,93" concept="5" />
+      <node id="894673071893681833" at="108,93,109,0" concept="8" />
+      <node id="1437502540629026085" at="109,0,110,0" concept="8" />
+      <node id="894673071893689681" at="110,0,111,154" concept="5" />
+      <node id="894673071893745858" at="111,154,112,152" concept="5" />
+      <node id="894673071893744419" at="112,152,113,0" concept="8" />
+      <node id="1437502540629027190" at="113,0,114,39" concept="7" />
+      <node id="894673071893749048" at="115,35,116,95" concept="2" />
+      <node id="894673071893746953" at="117,5,118,0" concept="8" />
+      <node id="894673071893751553" at="118,0,119,63" concept="6" />
+      <node id="7495353643685500656" at="126,0,127,0" concept="9" trace="SBOX" />
+      <node id="7495353643849490773" at="128,0,129,0" concept="9" trace="RCON" />
+      <node id="1354234980245069376" at="129,0,130,0" concept="9" trace="nb" />
+      <node id="1354234980245073793" at="130,0,131,0" concept="9" trace="nk" />
+      <node id="3255992103977035620" at="132,0,133,0" concept="9" trace="sBoxMem" />
+      <node id="3255992103309357053" at="134,68,135,0" concept="8" />
+      <node id="3255992103309357054" at="135,0,136,20" concept="5" />
+      <node id="3255992103309357060" at="136,20,137,169" concept="5" />
+      <node id="3255992103309357076" at="137,169,138,162" concept="5" />
+      <node id="3255992103309357093" at="138,162,139,26" concept="5" />
+      <node id="3255992103309357097" at="139,26,140,0" concept="8" />
+      <node id="3255992103309357100" at="140,0,141,14" concept="5" />
+      <node id="3255992103309357104" at="141,14,142,0" concept="8" />
+      <node id="3255992103309357107" at="143,20,144,127" concept="2" />
+      <node id="3255992103309357141" at="144,127,145,10" concept="2" />
+      <node id="3255992103309357149" at="147,31,148,21" concept="2" />
+      <node id="3255992103309357159" at="149,24,150,27" concept="2" />
+      <node id="3255992103309357164" at="150,27,151,27" concept="2" />
+      <node id="3255992103309357169" at="151,27,152,93" concept="2" />
+      <node id="3255992103309357192" at="154,35,155,59" concept="2" />
+      <node id="3255992103309357218" at="156,7,157,10" concept="2" />
+      <node id="3255992103309357229" at="158,5,159,0" concept="8" />
+      <node id="3255992103309357230" at="159,0,160,16" concept="5" />
+      <node id="3255992103309357241" at="162,35,163,44" concept="2" />
+      <node id="3255992103309357251" at="163,44,164,14" concept="2" />
+      <node id="3255992103309357272" at="166,5,167,23" concept="6" />
+      <node id="3255992103309380185" at="170,64,171,153" concept="5" />
+      <node id="3255992103309380198" at="172,40,173,47" concept="2" />
+      <node id="3255992103309380223" at="174,5,175,16" concept="6" />
+      <node id="3255992103309385068" at="178,64,179,153" concept="5" />
+      <node id="3255992103977053368" at="180,40,181,44" concept="2" />
+      <node id="3255992103309385101" at="182,5,183,16" concept="6" />
+      <node id="3255992103309389887" at="186,73,187,157" concept="5" />
+      <node id="3255992103977056424" at="189,49,190,60" concept="2" />
+      <node id="3255992103309389939" at="192,5,193,20" concept="6" />
+      <node id="3255992103309410941" at="197,73,198,0" concept="8" />
+      <node id="3255992103309410942" at="198,0,199,68" concept="5" />
+      <node id="3255992103309410950" at="201,25,202,37" concept="2" />
+      <node id="3255992103309410962" at="203,7,204,17" concept="2" />
+      <node id="3255992103309410968" at="204,17,205,100" concept="7" />
+      <node id="3255992103309410970" at="205,100,206,119" concept="7" />
+      <node id="3255992103309410974" at="207,19,208,14" concept="1" />
+      <node id="3255992103309410978" at="209,7,210,39" concept="5" />
+      <node id="3255992103309410985" at="210,39,211,31" concept="5" />
+      <node id="3255992103309410991" at="211,31,212,34" concept="2" />
+      <node id="3255992103309410997" at="212,34,213,76" concept="5" />
+      <node id="3255992103309411003" at="213,76,214,0" concept="8" />
+      <node id="3255992103309411004" at="214,0,215,45" concept="7" />
+      <node id="3255992103309411006" at="216,7,217,35" concept="5" />
+      <node id="3255992103309411006" at="217,35,218,107" concept="5" />
+      <node id="3255992103309411008" at="220,46,221,29" concept="2" />
+      <node id="3255992103309411006" at="222,18,223,0" concept="8" />
+      <node id="3255992103309411006" at="225,16,226,45" concept="2" />
+      <node id="3255992103309411006" at="226,45,227,51" concept="2" />
+      <node id="3255992103309411008" at="227,51,228,27" concept="2" />
+      <node id="3255992103309411006" at="228,27,229,0" concept="8" />
+      <node id="3255992103309411006" at="229,0,230,40" concept="2" />
+      <node id="3255992103309411006" at="230,40,231,0" concept="8" />
+      <node id="3255992103309411006" at="231,0,232,54" concept="2" />
+      <node id="3255992103309411006" at="232,54,233,0" concept="8" />
+      <node id="3255992103309411006" at="233,0,234,40" concept="2" />
+      <node id="3255992103309411006" at="234,40,235,44" concept="2" />
+      <node id="3255992103309411006" at="236,9,237,0" concept="8" />
+      <node id="3255992103309411022" at="239,5,240,13" concept="6" />
+      <node id="3255992103309405374" at="244,74,245,157" concept="5" />
+      <node id="3255992103309405388" at="246,33,247,44" concept="2" />
+      <node id="3255992103309405400" at="247,44,248,54" concept="2" />
+      <node id="3255992103309405417" at="248,54,249,54" concept="2" />
+      <node id="3255992103309405434" at="249,54,250,54" concept="2" />
+      <node id="3255992103309405459" at="251,5,252,20" concept="6" />
+      <node id="3255992103309400073" at="255,75,256,0" concept="8" />
+      <node id="3255992103309400074" at="256,0,257,143" concept="5" />
+      <node id="3255992103309400083" at="257,143,258,157" concept="5" />
+      <node id="3255992103309400099" at="260,35,261,36" concept="2" />
+      <node id="3255992103309400117" at="262,7,263,140" concept="2" />
+      <node id="3255992103309400143" at="263,140,264,140" concept="2" />
+      <node id="3255992103309400169" at="264,140,265,140" concept="2" />
+      <node id="3255992103309400195" at="265,140,266,140" concept="2" />
+      <node id="3255992103309400229" at="267,5,268,20" concept="6" />
+      <node id="3255992103309394918" at="272,125,273,157" concept="5" />
+      <node id="3255992103309394930" at="273,157,274,16" concept="5" />
+      <node id="3255992103309394938" at="276,35,277,82" concept="2" />
+      <node id="3255992103309394956" at="277,82,278,14" concept="2" />
+      <node id="3255992103309394975" at="280,5,281,20" concept="6" />
+      <node id="3255992103321665630" at="284,99,285,34" concept="5" />
+      <node id="3255992103321669874" at="285,34,286,0" concept="8" />
+      <node id="3255992103321669996" at="286,0,287,77" concept="7" />
+      <node id="3255992103321669998" at="287,77,288,70" concept="5" />
+      <node id="3255992103309213500" at="288,70,289,0" concept="8" />
+      <node id="3255992103309213501" at="289,0,290,52" concept="7" />
+      <node id="3255992103321674405" at="290,52,291,0" concept="8" />
+      <node id="3255992103321669976" at="291,0,292,0" concept="8" />
+      <node id="3255992103309213510" at="292,0,293,27" concept="7" />
+      <node id="3255992103309213512" at="293,27,294,33" concept="2" />
+      <node id="3255992103321683382" at="294,33,295,0" concept="8" />
+      <node id="3255992103321683589" at="295,0,296,52" concept="6" />
+      <node id="3255992103309244275" at="300,112,301,167" concept="5" />
+      <node id="3255992103309349055" at="301,167,302,0" concept="8" />
+      <node id="3255992103309213517" at="302,0,303,154" concept="5" />
+      <node id="3255992103309213529" at="303,154,304,16" concept="5" />
+      <node id="3255992103309213537" at="306,35,307,48" concept="2" />
+      <node id="3255992103309213564" at="309,5,310,50" concept="2" />
+      <node id="3255992103309213571" at="310,50,311,20" concept="5" />
+      <node id="3255992103309213579" at="312,46,313,30" concept="2" />
+      <node id="3255992103309213584" at="313,30,314,31" concept="2" />
+      <node id="3255992103309213589" at="314,31,315,32" concept="2" />
+      <node id="3255992103309213594" at="315,32,316,86" concept="2" />
+      <node id="3255992103309213614" at="316,86,317,98" concept="7" />
+      <node id="3255992103309213616" at="317,98,318,74" concept="7" />
+      <node id="3255992103309213626" at="319,5,320,28" concept="2" />
+      <node id="3255992103309213631" at="320,28,321,29" concept="2" />
+      <node id="3255992103309213636" at="321,29,322,76" concept="2" />
+      <node id="3255992103309213654" at="322,76,323,0" concept="8" />
+      <node id="3255992103309213655" at="323,0,324,12" concept="2" />
+      <node id="3255992103309213663" at="326,35,327,47" concept="2" />
+      <node id="3255992103309213673" at="327,47,328,14" concept="2" />
+      <node id="3255992103309234204" at="330,5,331,0" concept="8" />
+      <node id="3255992103309252193" at="331,0,332,22" concept="6" />
+      <node id="3255992103309411006" at="222,16,224,11" concept="0" />
+      <node id="7749765820628342220" at="25,0,28,5" concept="3" />
+      <node id="7749765820628342239" at="29,0,32,5" concept="3" />
+      <node id="1437502540628923059" at="38,0,41,0" concept="10" trace="get_block_iv#([Lbackend/auxTypes/UnsignedInteger;I)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="7749765820628315029" at="54,41,57,5" concept="4" />
+      <node id="1437502540628873841" at="85,0,88,0" concept="10" trace="aes_gcm_encrypt#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103382017350" at="90,0,93,0" concept="10" trace="aes_gcm_decrypt#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="7749765820628303637" at="95,0,98,0" concept="10" trace="aes_gcm_decrypt#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="894673071893747307" at="114,39,117,5" concept="3" />
+      <node id="3255992103309357190" at="153,7,156,7" concept="3" />
+      <node id="3255992103309380196" at="171,153,174,5" concept="3" />
+      <node id="3255992103309385079" at="179,153,182,5" concept="3" />
+      <node id="3255992103309389901" at="188,44,191,7" concept="3" />
+      <node id="3255992103309410948" at="200,54,203,7" concept="4" />
+      <node id="3255992103309410972" at="206,119,209,7" concept="4" />
+      <node id="3255992103309400097" at="259,33,262,7" concept="3" />
+      <node id="3255992103309213535" at="305,33,308,7" concept="3" />
+      <node id="3255992103309357105" at="142,0,146,5" concept="11" />
+      <node id="3255992103309357236" at="161,45,165,7" concept="3" />
+      <node id="3255992103309394936" at="275,33,279,7" concept="3" />
+      <node id="3255992103309213661" at="325,33,329,7" concept="3" />
+      <node id="3255992103309357157" at="148,21,153,7" concept="4" />
+      <node id="3255992103309389899" at="187,157,192,5" concept="3" />
+      <node id="3255992103309411006" at="219,23,224,11" concept="4" />
+      <node id="3255992103309213533" at="304,16,309,5" concept="3" />
+      <node id="3255992103309357234" at="160,16,166,5" concept="3" />
+      <node id="3255992103309405386" at="245,157,251,5" concept="3" />
+      <node id="3255992103309394934" at="274,16,280,5" concept="3" />
+      <node id="3255992103309213659" at="324,12,330,5" concept="3" />
+      <node id="3255992103309380182" at="170,0,177,0" concept="10" trace="rotWord#([Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309385065" at="178,0,185,0" concept="10" trace="subWord#([Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309213577" at="311,20,319,5" concept="3" />
+      <node id="7749765820628315110" at="70,0,79,5" concept="3" />
+      <node id="3255992103309389884" at="186,0,195,0" concept="10" trace="subState#([[Lbackend/auxTypes/UnsignedInteger;)[[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309400095" at="258,157,267,5" concept="3" />
+      <node id="3255992103309405371" at="244,0,254,0" concept="10" trace="shiftRows#([[Lbackend/auxTypes/UnsignedInteger;)[[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309411006" at="225,14,236,9" concept="0" />
+      <node id="3255992103309394915" at="272,0,283,0" concept="10" trace="addRoundkey#([Lbackend/auxTypes/UnsignedInteger;[[Lbackend/auxTypes/UnsignedInteger;II)[[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309357147" at="146,5,158,5" concept="11" />
+      <node id="7749765820628342208" at="23,0,36,0" concept="10" trace="get_block_iv#([Lbackend/auxTypes/UnsignedInteger;Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103321662977" at="284,0,298,0" concept="10" trace="aes_encrypt#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309400070" at="255,0,270,0" concept="10" trace="mixColumns#([[Lbackend/auxTypes/UnsignedInteger;)[[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="894673071893665688" at="103,0,121,0" concept="10" trace="aes_gcm_decrypt_128bytes_middle#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;Lbackend/auxTypes/UnsignedInteger;Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309411006" at="218,107,236,9" concept="4" />
+      <node id="3255992103309411006" at="215,45,238,7" concept="0" />
+      <node id="3255992103309213484" at="300,0,334,0" concept="10" trace="encrypt_expanded#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309357050" at="134,0,169,0" concept="10" trace="expandKey#([Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="7749765820628314996" at="47,0,83,0" concept="10" trace="aes_gcm_encrypt#([Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;[Lbackend/auxTypes/UnsignedInteger;Lbackend/auxTypes/UnsignedInteger;)[Lbackend/auxTypes/UnsignedInteger;" />
+      <node id="3255992103309410946" at="199,68,239,5" concept="3" />
+      <node id="3255992103309410938" at="197,0,242,0" concept="10" trace="gal_mul_const#(Lbackend/auxTypes/UnsignedInteger;I)Lbackend/auxTypes/UnsignedInteger;" />
+      <scope id="7749765820628342221" at="26,34,27,35" />
+      <scope id="7749765820628342240" at="30,35,31,182" />
+      <scope id="1437502540628923060" at="38,85,39,83" />
+      <scope id="7749765820628315030" at="55,33,56,22" />
+      <scope id="1437502540628873842" at="85,125,86,94" />
+      <scope id="3255992103382017351" at="90,126,91,56" />
+      <scope id="7749765820628303638" at="95,158,96,72" />
+      <scope id="894673071893747309" at="115,35,116,95" />
+      <scope id="3255992103309357191" at="154,35,155,59" />
+      <scope id="3255992103309380197" at="172,40,173,47" />
+      <scope id="3255992103309385080" at="180,40,181,44" />
+      <scope id="3255992103309389902" at="189,49,190,60" />
+      <scope id="3255992103309410949" at="201,25,202,37" />
+      <scope id="3255992103309410973" at="207,19,208,14" />
+      <scope id="3255992103309411006" at="220,46,221,29" />
+      <scope id="3255992103309411006" at="222,18,223,0" />
+      <scope id="3255992103309411007" at="227,51,228,27" />
+      <scope id="3255992103309400098" at="260,35,261,36" />
+      <scope id="3255992103309213536" at="306,35,307,48" />
+      <scope id="3255992103309357106" at="143,20,145,10" />
+      <scope id="3255992103309357240" at="162,35,164,14" />
+      <scope id="3255992103309394937" at="276,35,278,14" />
+      <scope id="3255992103309213662" at="326,35,328,14" />
+      <scope id="7749765820628342220" at="25,0,28,5">
+        <var name="i" id="7749765820628342230" />
+      </scope>
+      <scope id="7749765820628342239" at="29,0,32,5">
+        <var name="i" id="7749765820628342261" />
+      </scope>
+      <scope id="1437502540628923059" at="38,0,41,0">
+        <var name="block_num" id="1437502540628923129" />
+        <var name="iv" id="1437502540628923126" />
+      </scope>
+      <scope id="1437502540628873841" at="85,0,88,0">
+        <var name="iv" id="1437502540628873986" />
+        <var name="key" id="1437502540628873983" />
+        <var name="plaintext" id="1437502540628873989" />
+      </scope>
+      <scope id="3255992103382017350" at="90,0,93,0">
+        <var name="ciphertext" id="3255992103382017543" />
+        <var name="iv" id="3255992103382017540" />
+        <var name="key" id="3255992103382017537" />
+      </scope>
+      <scope id="7749765820628303637" at="95,0,98,0">
+        <var name="ciphertext" id="7749765820628303653" />
+        <var name="iv" id="7749765820628303650" />
+        <var name="key" id="7749765820628303647" />
+        <var name="starting_block" id="7749765820628306581" />
+      </scope>
+      <scope id="894673071893747307" at="114,39,117,5">
+        <var name="i" id="894673071893747310" />
+      </scope>
+      <scope id="3255992103309357158" at="149,24,152,93" />
+      <scope id="3255992103309357190" at="153,7,156,7">
+        <var name="v" id="3255992103309357210" />
+      </scope>
+      <scope id="3255992103309380196" at="171,153,174,5">
+        <var name="j" id="3255992103309380213" />
+      </scope>
+      <scope id="3255992103309385079" at="179,153,182,5">
+        <var name="j" id="3255992103309385091" />
+      </scope>
+      <scope id="3255992103309389900" at="188,44,191,7" />
+      <scope id="3255992103309389901" at="188,44,191,7">
+        <var name="j" id="3255992103309389917" />
+      </scope>
+      <scope id="3255992103309400097" at="259,33,262,7">
+        <var name="i" id="3255992103309400109" />
+      </scope>
+      <scope id="3255992103309213534" at="305,33,308,7" />
+      <scope id="3255992103309213535" at="305,33,308,7">
+        <var name="k" id="3255992103309213548" />
+      </scope>
+      <scope id="3255992103309357235" at="161,45,165,7" />
+      <scope id="3255992103309357236" at="161,45,165,7">
+        <var name="j" id="3255992103309357237" />
+      </scope>
+      <scope id="3255992103309405387" at="246,33,250,54" />
+      <scope id="3255992103309394935" at="275,33,279,7" />
+      <scope id="3255992103309394936" at="275,33,279,7">
+        <var name="i" id="3255992103309394959" />
+      </scope>
+      <scope id="3255992103309213660" at="325,33,329,7" />
+      <scope id="3255992103309213661" at="325,33,329,7">
+        <var name="k" id="3255992103309213676" />
+      </scope>
+      <scope id="3255992103309380184" at="170,64,175,16">
+        <var name="newW" id="3255992103309380186" />
+      </scope>
+      <scope id="3255992103309385067" at="178,64,183,16">
+        <var name="newW" id="3255992103309385069" />
+      </scope>
+      <scope id="3255992103309389899" at="187,157,192,5">
+        <var name="i" id="3255992103309389929" />
+      </scope>
+      <scope id="3255992103309411006" at="219,23,224,11" />
+      <scope id="3255992103309213533" at="304,16,309,5">
+        <var name="j" id="3255992103309213556" />
+      </scope>
+      <scope id="3255992103309357234" at="160,16,166,5">
+        <var name="k" id="3255992103309357259" />
+      </scope>
+      <scope id="3255992103309405386" at="245,157,251,5">
+        <var name="j" id="3255992103309405451" />
+      </scope>
+      <scope id="3255992103309394934" at="274,16,280,5">
+        <var name="j" id="3255992103309394967" />
+      </scope>
+      <scope id="3255992103309213578" at="312,46,318,74" />
+      <scope id="3255992103309213659" at="324,12,330,5">
+        <var name="j" id="3255992103309213684" />
+      </scope>
+      <scope id="7749765820628315111" at="71,42,78,0">
+        <var name="iv_cipher" id="7749765820628315119" />
+      </scope>
+      <scope id="3255992103309380182" at="170,0,177,0">
+        <var name="w" id="3255992103309380228" />
+      </scope>
+      <scope id="3255992103309385065" at="178,0,185,0">
+        <var name="w" id="3255992103309425551" />
+      </scope>
+      <scope id="3255992103309389886" at="186,73,193,20">
+        <var name="newState" id="3255992103309389888" />
+      </scope>
+      <scope id="3255992103309400096" at="259,33,266,140" />
+      <scope id="3255992103309405373" at="244,74,252,20">
+        <var name="newState" id="3255992103309405375" />
+      </scope>
+      <scope id="3255992103309213577" at="311,20,319,5">
+        <var name="round" id="3255992103309213618" />
+      </scope>
+      <scope id="7749765820628315110" at="70,0,79,5">
+        <var name="i" id="7749765820628315171" />
+      </scope>
+      <scope id="3255992103309389884" at="186,0,195,0">
+        <var name="state" id="3255992103309389945" />
+      </scope>
+      <scope id="3255992103309400095" at="258,157,267,5">
+        <var name="c" id="3255992103309400221" />
+      </scope>
+      <scope id="3255992103309394917" at="272,125,281,20">
+        <var name="idx" id="3255992103309394931" />
+        <var name="newState" id="3255992103309394919" />
+      </scope>
+      <scope id="3255992103309357148" at="147,31,157,10" />
+      <scope id="3255992103309411006" at="225,16,235,44" />
+      <scope id="3255992103309405371" at="244,0,254,0">
+        <var name="state" id="3255992103309405465" />
+      </scope>
+      <scope id="7749765820628342209" at="23,97,34,20">
+        <var name="block_iv" id="7749765820628342211" />
+      </scope>
+      <scope id="3255992103309394915" at="272,0,283,0">
+        <var name="expandedKey" id="3255992103309394981" />
+        <var name="from" id="3255992103309394988" />
+        <var name="state" id="3255992103309394984" />
+        <var name="to" id="3255992103309394990" />
+      </scope>
+      <scope id="3255992103321662980" at="284,99,296,52">
+        <var name="expandedKey" id="3255992103321665633" />
+        <var name="sBox" id="3255992103321669999" />
+      </scope>
+      <scope id="7749765820628342208" at="23,0,36,0">
+        <var name="block_num" id="7749765820628342278" />
+        <var name="iv" id="7749765820628342275" />
+      </scope>
+      <scope id="3255992103309400072" at="255,75,268,20">
+        <var name="a" id="3255992103309400075" />
+        <var name="newState" id="3255992103309400084" />
+      </scope>
+      <scope id="3255992103321662977" at="284,0,298,0">
+        <var name="key" id="3255992103321665516" />
+        <var name="plaintext" id="3255992103321665552" />
+      </scope>
+      <scope id="3255992103309400070" at="255,0,270,0">
+        <var name="state" id="3255992103309400235" />
+      </scope>
+      <scope id="894673071893665691" at="103,198,119,63">
+        <var name="pad" id="894673071893682201" />
+        <var name="pad_offset" id="894673071893689684" />
+        <var name="pad_ram" id="894673071893745861" />
+        <var name="zero_plaintext" id="894673071893676879" />
+      </scope>
+      <scope id="894673071893665688" at="103,0,121,0">
+        <var name="ciphertext" id="894673071893742928" />
+        <var name="iv" id="894673071893669606" />
+        <var name="key" id="894673071893669281" />
+        <var name="offset" id="894673071893671571" />
+        <var name="starting_block" id="894673071893669691" />
+      </scope>
+      <scope id="3255992103309411006" at="216,7,237,0">
+        <var name="bit_l0c0fc" id="3255992103309411006" />
+        <var name="c_l0c0fc" id="3255992103309411006" />
+      </scope>
+      <scope id="3255992103309213489" at="300,112,332,22">
+        <var name="ciphertext" id="3255992103309244278" />
+        <var name="idx" id="3255992103309213530" />
+        <var name="nr" id="3255992103309213572" />
+        <var name="state" id="3255992103309213518" />
+      </scope>
+      <scope id="3255992103309357052" at="134,68,167,23">
+        <var name="expandedKey" id="3255992103309357061" />
+        <var name="i" id="3255992103309357101" />
+        <var name="idx" id="3255992103309357231" />
+        <var name="nr" id="3255992103309357055" />
+        <var name="tmp" id="3255992103309357094" />
+        <var name="w" id="3255992103309357077" />
+      </scope>
+      <scope id="7749765820628314997" at="47,157,81,71">
+        <var name="block_iv" id="7749765820628315083" />
+        <var name="block_pt" id="7749765820628315092" />
+        <var name="cipher_text" id="7749765820628315013" />
+        <var name="expandedKey" id="7749765820628315076" />
+        <var name="last_block_len" id="7749765820628315006" />
+        <var name="len_in_bytes" id="7749765820628314999" />
+        <var name="num_blocks" id="7749765820628315023" />
+        <var name="output" id="7749765820628315102" />
+        <var name="sBox" id="7749765820628315044" />
+      </scope>
+      <scope id="3255992103309213484" at="300,0,334,0">
+        <var name="expandedKey" id="3255992103309294502" />
+        <var name="plaintext" id="3255992103309287681" />
+      </scope>
+      <scope id="3255992103309357050" at="134,0,169,0">
+        <var name="key" id="3255992103309357277" />
+      </scope>
+      <scope id="7749765820628314996" at="47,0,83,0">
+        <var name="iv" id="7749765820628315193" />
+        <var name="key" id="7749765820628315190" />
+        <var name="plaintext" id="7749765820628315196" />
+        <var name="starting_block" id="7749765820628319261" />
+      </scope>
+      <scope id="3255992103309410947" at="200,54,238,7">
+        <var name="hi" id="3255992103309410986" />
+        <var name="tmp" id="3255992103309410998" />
+        <var name="xBits" id="3255992103309410979" />
+      </scope>
+      <scope id="3255992103309410946" at="199,68,239,5">
+        <var name="counter" id="3255992103309411013" />
+      </scope>
+      <scope id="3255992103309410940" at="197,73,240,13">
+        <var name="p" id="3255992103309410943" />
+      </scope>
+      <scope id="3255992103309410938" at="197,0,242,0">
+        <var name="c" id="3255992103309411027" />
+        <var name="x" id="3255992103309411025" />
+      </scope>
+      <unit id="3255992103309134499" at="13,0,336,0" name="xjsnark.aes_gcm.AES_GCM" />
+    </file>
+  </root>
+</debug-info>
+
