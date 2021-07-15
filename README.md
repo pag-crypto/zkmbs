@@ -36,11 +36,9 @@ To run the whole DNS experiment with the Shortcut channel opening, run the comma
 
 ## Running jsnark on generated files
 
-To generate the proof using the .arith and .in files, we use https://github.com/akosba/jsnark. We have downloaded the required files in the `jsnark/` directory. Follow the Prerequisites and "jsnark installation instructions" from the jsnark repository.
+To generate the proof using the .arith and .in files, we use https://github.com/akosba/jsnark. Clone the jsnark repository into a `jsnark/` directory next to the `gen/` directory. Follow the Prerequisites and "jsnark installation instructions" from the jsnark repository.
 
-Once the .arith and .in files are generated (via MPS or Java), the libsnark command is as follows:  
-
-In the gen/ directory, run `../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg DNS_Shortcut_dot.arith DNS_Shortcut_dot_Sample_Run1_optimized.in`.
+Once the .arith and .in files are generated (via MPS or Java), the libsnark command is as follows: in the `gen/` directory, run `../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg <.arith file> <.in file>`.
 
 The general command is `<path to run_ppzksnark> gg <path to arith file> <path to in file>`.
 
