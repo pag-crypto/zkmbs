@@ -1,6 +1,10 @@
-# Installation and Running
+# Introduction and Overview
 
-This repository contains the code implementing the experiments from the zero-knowledge middlebox paper (link): privacy-preserving DNS query filter, ODOH resolver and HTTP firewall. The xJsnark liibrary is used to generated circuits. This includes modules to perform AES-GCM, SHA256, Merkle tree membership testing, ECDHE and the TLS 1.3 key schedule.
+This repository accompanies the paper "Zero-Knowledge Middleboxes" by Paul Grubbs, Arasu Arun, Ye Zhang, Joseph Bonneau, and Michael Walfish (link). Zero-knowledge middleboxes (ZKMBs) are network middleboxes that enforce network usage policies on encrypted traffic in a privacy-preserving way. Clients send the middlebox zero-knowledge proofs that their traffic is policy-compliant; these proofs reveal nothing about the client's communication except that it complies with the policy.
+
+
+This repository contains code for the three ZKMB case studies described in the paper, as well as all the channel opening circuits. 
+The xJsnark library is used to generated circuits, including modules to perform AES-CTR, SHA256, Merkle tree membership testing, ECDHE and the TLS 1.3 key schedule. It also contains support code (such as Python scripts) for generating test inputs.
 
 # xJsnark instructions
 
@@ -20,7 +24,7 @@ The code can now be read. To test the code and run experiments, the modules need
 
 When running a module, make sure to go to Run -> Edit Configurations and set the "working directory" to whichever file your test input files are in. All programs in this package that require a file to be read have a file name variable at the top to set.
 
-The programs generate .arith and .in files are in the workingd irectory, too. A proof can be generated from these using libsnark (see "Generating Circuits with Java" below).
+The programs generate .arith and .in files are in the working directory, too. A proof can be generated from these using libsnark (see "Generating Circuits with Java" below).
 
 ### Optimizer
 
@@ -50,7 +54,7 @@ The gg is for Groth16. Without it, the default is GGPR.
 
 ## The Modules and Experiments
 
-There are 11 modules that can be read in the MPS IDE. The following modules implement different functionilities that are used in the full programs: aes_gcm, ecdhe, field_table, membership_merkle, poseidon, tls13_key_schedules, util_and_sha.
+There are 11 modules that can be read in the MPS IDE. The following modules implement different functionalities that are used in the full programs: aes_gcm, ecdhe, field_table, membership_merkle, poseidon, tls13_key_schedules, util_and_sha.
 
 The following contain the full end-to-end programs:
 * e2eDNS
@@ -64,7 +68,7 @@ The e2eDNS module contains the code for zero-knowledge DNS blocklist filtering. 
 * DNS_Shortcut_doh_get
 * DNS_Amortized_dot
 
-The first two use the "Shortcut" channel opening and the third uses the "Amortized" channel opening. Each of them take a TLS transcript of an ecrypted DNS query, the client's secret inputs, and a Merkle non-membership proof. There are three test files given are: 
+The first two use the "Shortcut" channel opening and the third uses the "Amortized" channel opening. Each of them take a TLS transcript of an encrypted DNS query, the client's secret inputs, and a Merkle non-membership proof. There are three test files given are: 
 * test.txt
 * test_doh.txt
 * test_wildcard.txt
