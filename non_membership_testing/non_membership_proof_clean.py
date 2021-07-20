@@ -2,6 +2,8 @@ from poseidon_hash import poseidon_hash
 import os
 import time
 
+blocklist_file_name = "pi_blocklist_all.list.txt"
+
 # read blacklist from file
 def parseFile(filename):
 	blacklist = []
@@ -262,7 +264,7 @@ def wildcard_non_membership_preprocess(leaf, input_array):
 def wildcard_non_membership_witness(leaf):
 
 	start = time.time()
-	input_array = parseFile("pi_blocklist_porn_all.list.txt")
+	input_array = parseFile("pi_blocklist_all.list.txt")
 	input_array = wildcard_sort(input_array)
 	end = time.time()
 	print("parse and sort blocklist time:", end-start)
@@ -355,13 +357,12 @@ def wildcard_non_membership_witness(leaf):
 
 
 
-# input_array = parseFile("pi_blocklist_porn_all.list.txt")
+# input_array = parseFile("pi_blocklist_all.list.txt")
 # print("parse done")
 # return_value = wildcard_non_membership_preprocess("google.com", input_array)
 # print(return_value)
 
 start = time.time()
-# return_value = wildcard_non_membership_witness("porn-google.com")
 return_value = wildcard_non_membership_witness("google.com")
 end = time.time()
 print(start, end)
