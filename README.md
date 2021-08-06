@@ -1,6 +1,6 @@
 # Introduction and Overview
 
-This repository accompanies the paper "Zero-Knowledge Middleboxes" by Paul Grubbs, Arasu Arun, Ye Zhang, Joseph Bonneau, and Michael Walfish (link). Zero-knowledge middleboxes (ZKMBs) are network middleboxes that enforce network usage policies on encrypted traffic in a privacy-preserving way. Clients send the middlebox zero-knowledge proofs that their traffic is policy-compliant; these proofs reveal nothing about the client's communication except that it complies with the policy.
+This repository accompanies the paper "[Zero-Knowledge Middleboxes](https://eprint.iacr.org/2021/1022)" by Paul Grubbs, Arasu Arun, Ye Zhang, Joseph Bonneau, and Michael Walfish. Zero-knowledge middleboxes (ZKMBs) are network middleboxes that enforce network usage policies on encrypted traffic in a privacy-preserving way. Clients send the middlebox zero-knowledge proofs that their traffic is policy-compliant; these proofs reveal nothing about the client's communication except that it complies with the policy.
 
 
 This repository contains code for the three ZKMB case studies described in the paper, as well as all the channel opening circuits. 
