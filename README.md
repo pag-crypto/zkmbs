@@ -8,7 +8,9 @@ The xJsnark library is used to generated circuits, including modules to perform 
 
 # xJsnark instructions
 
-xJsnark is written using the MPS IDE. The `xjsnark_zkmb` folder contains the 11 .mps files that are readable by the IDE. It is possible to generate the circuit without MPS using just the source Java files (see "Generating Circuits" below). These source files are in the `gen/src/xjsnark/` folder.
+Original xJsnark repository: https://github.com/akosba/xjsnark 
+
+xJsnark is written using the MPS IDE. The `xjsnark_zkmb` folder contains the 11 ".mps" files that are readable by the IDE. It is possible to generate the circuit without MPS using just the source Java files (see "Generating Circuits" below). These source files are in the `gen/src/xjsnark/` folder.
 
 ## Installation Instructions (MPS)
 
