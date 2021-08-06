@@ -35,7 +35,7 @@ xJsnark is written using the MPS IDE. The `xjsnark_zkmb` folder contains the 11 
 
 The MPS IDE is recommended for running the code. 
 
-__New MPS installation:__ Install MPS from the "Installation" section of the xJsnark repository. Complete the rest of the instructions and Rebuild the language. When you open the project as instructed, the tutorial model files will be present at `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/`. Now, replace the contents of that folder with the contents of `xjsnark_zkmb/` folder from this repository. Thus, the `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/` should now contain these eleven .mps files. MPS will automatically read these files when you open the project as usual.
+__New MPS installation:__ Install MPS from the "[Installation](https://github.com/akosba/xjsnark#installation)" section of the xJsnark repository. Complete the rest of the instructions and Rebuild the language. When you open the project as instructed, the tutorial model files will be present at `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/`. Now, replace the contents of that folder with the contents of `xjsnark_zkmb/` folder from this repository. Thus, the `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/` should now contain these eleven .mps files. MPS will automatically read these files when you open the project as usual.
 
 __With an existing MPS installation:__ Copy all the ".mps" files from the `/xjsnark_zkmb` directory of this repository into your `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/` directory.
 
