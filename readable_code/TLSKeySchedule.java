@@ -3,7 +3,7 @@ public class TLSKeySchedule {
    
   // NOTATION is from https://eprint.iacr.org/2020/1044.pdf 
    
-  // This class contains functions that compute the different types of TLS1.3 Key Schedule 
+  // This class contains functions that derive the TLS 1.3 client's application key given the following inputs:
   // Input:  
   //   - handshake transcript 
   //   - client's secrets (PSK and/or DHE share) 
@@ -11,8 +11,8 @@ public class TLSKeySchedule {
   // Output: 
   //   - client's application traffic key 
   //   - decryption of the applicaton data 
-  // . 
-  // This is done for 4 types of TLS 1.3 Key Schedule methods: 
+  //  
+  // This is done for the following 4 types of TLS 1.3 Key Schedule methods: 
   //   - 0RTT 
   //   - Baseline 1RTT 
   //   - Shortcut 1RTT 
@@ -128,52 +128,7 @@ public class TLSKeySchedule {
      
     return new uint_8[][]{dns_plaintext, tk_capp, iv_capp}; 
   } 
-   
-   
-  /* 
-  public static uint_8[][] get1RTT_resumption(uint_8[] PSK, uint_256 ecdhe_sk, F_p256 A_x, F_p256 A_y, F_p256 B_x, F_p256 B_y, uint_8[] H_2, uint_8[] pt2, uint_16 pt2_len, uint_8[] ct_3, uint_16 ct3_length, uint_8[] ct_3_lb, uint_8[] dns_ciphertext) { 
-     
-     
-    uint_8[] ES = HKDF.hkdf_extract(Util.new_zero_array(32), PSK); 
-     
-    uint_8[] dES = HKDF.hkdf_expand_derive_secret(ES, "derived", SHA2.hash_of_empty()); 
-     
-    uint_8[] DHE = ECDHE.DHExchange(A_x, A_y, B_x, B_y, ecdhe_sk); 
-     
-     
-    uint_8[] HS = HKDF.hkdf_extract(dES, DHE); 
-     
-    uint_8[] SHTS = HKDF.hkdf_expand_derive_secret(HS, "s hs traffic", H_2); 
-     
-    uint_8[] tk_shs = HKDF.hkdf_expand_derive_tk(SHTS, 16); 
-    uint_8[] iv_shs = HKDF.hkdf_expand_derive_iv(SHTS, 12); 
-     
-    uint_8[] dHS = HKDF.hkdf_expand_derive_secret(HS, "derived", SHA2.hash_of_empty()); 
-     
-    uint_8[] MS = HKDF.hkdf_extract(dHS, Util.new_zero_array(32)); 
-     
-    uint_8[] ct3_dec = AES_GCM.aes_gcm_decrypt(tk_shs, iv_shs, ct_3); 
-     
-    uint_8 num_aes_blocks = uint_8(ct3_length / uint_8(64)) * uint_8(4); 
-     
-    uint_8[] ct3_lb_dec = AES_GCM.aes_gcm_decrypt(tk_shs, iv_shs, ct_3_lb, num_aes_blocks); 
-     
-    uint_8[] preimage_h3 = Util.concat(pt2, ct3_dec); 
-     
-    uint_8[] H_3 = SHA2.sha2_of_prefix(preimage_h3, pt2_len + ct3_length, ct3_lb_dec); 
-     
-    uint_8[] CATS = HKDF.hkdf_expand_derive_secret(MS, "c ap traffic", H_3); 
-     
-    uint_8[] tk_capp = HKDF.hkdf_expand_derive_tk(CATS, 16); 
-    uint_8[] iv_capp = HKDF.hkdf_expand_derive_iv(CATS, 12); 
-     
-    uint_8[] dns_plaintext = AES_GCM.aes_gcm_decrypt(tk_capp, iv_capp, dns_ciphertext); 
-     
-    return new uint_8[][]{dns_plaintext, tk_capp, iv_capp}; 
-  } 
-  */ 
-   
-   
+
   // Implements the HS shortcut, where the client's witness is the HS secret  
   // Steps: 
   // (1) Derive the server handshake key using the HS 
@@ -193,7 +148,7 @@ public class TLSKeySchedule {
    
   // SHA_H_Checkpoint - the H-state of SHA up to the last whole block of TR7 
    
-  public static uint_8[][] get1RTT_HS_new(uint_8[] HS, uint_8[] H2, uint_16 CH_SH_len, uint_16 ServExt_len, uint_8[] ServExt_ct_tail, uint_8 ServExt_tail_len, uint_32[] SHA_H_Checkpoint, uint_8[] appl_ct) { 
+  public static uint_8[][] get1RTT_HS(uint_8[] HS, uint_8[] H2, uint_16 CH_SH_len, uint_16 ServExt_len, uint_8[] ServExt_ct_tail, uint_8 ServExt_tail_len, uint_32[] SHA_H_Checkpoint, uint_8[] appl_ct) { 
      
     uint_8[] SHTS = HKDF.hkdf_expand_derive_secret(HS, "s hs traffic", H2); 
      
