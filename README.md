@@ -8,9 +8,9 @@ The xJsnark library is used to generated circuits, including modules to perform 
 
 # Reading the Code
 
-The code is written in xJsnark, which has its own Java-based DSL readable by the MPS IDE and stored as XML files. To make it easier to read the code, we extracted the readble code and stored them in the folder `readable_code`. They are only marked as ".java" files for syntax highlighting, but are actually written in the xJsnark DSL.
+The code is written with the [xJsnark](https://github.com/akosba/xjsnark) library, which has its own Java-based DSL readable by the MPS IDE and stored as XML files. To make it easier to read the code without having to download the IDE, we extracted the readble code and stored it in the folder `readable_code`. They are only marked as ".java" files for syntax highlighting, but are actually written in the xJsnark DSL. 
 
-The module structure of the original codebase is preserved. These files define the functionality of the circuits to be generated. There are two types of files:
+There are two types of files:
 - "Programs" define the circuit's inputs and the functionality of the circuit described
 	* see the "inputs {}" and "witnesses_AssertRange {}" brackets for the circuit's inputs and witnesses
 	* see the "public void outsource {}" function for the circuit's algorithm
