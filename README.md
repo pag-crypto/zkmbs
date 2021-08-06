@@ -6,6 +6,25 @@ This repository accompanies the paper "[Zero-Knowledge Middleboxes](https://epri
 This repository contains code for the three ZKMB case studies described in the paper, as well as all the channel opening circuits. 
 The xJsnark library is used to generated circuits, including modules to perform AES-CTR, SHA256, Merkle tree membership testing, ECDHE and the TLS 1.3 key schedule. It also contains support code (such as Python scripts) for generating test inputs.
 
+# Reading the Code
+
+The code is written in xJsnark, which has its own Java-based DSL readable by the MPS IDE and stored as XML files. To make it easier to read the code, we extracted the readble code and stored them in the folder `readable_code`. They are only marked as ".java" files for syntax highlighting, but are actually written in the xJsnark DSL.
+
+The module structure of the original codebase is preserved. These files define the functionality of the circuits to be generated. There are two types of files:
+- "Programs" define the circuit's inputs and the functionality of the circuit described
+	* see the "inputs {}" and "witnesses_AssertRange {}" brackets for the circuit's inputs and witnesses
+	* see the "public void outsource {}" function for the circuit's algorithm
+- "Classes" contain library functions that are called when defining the circuit's functionality
+
+Some files of note are:
+- TLSKeySchedule: contains the code to perform the Baseline, Shortcut and 0RTT TLS 1.3 key derivation
+- membership_merkle/non_membership: verifies a given Merkle tree non-membership proof with support for wildcards	
+- e2eDNS/DNS_Shortcut_dot.java: defines the circuit that performs the full encrypted DNS policy-check
+	1. Defines the inputs and witnesses for the TLS 1.3 and Merkle testing sub-circuits 
+	2. Calls TLSKeySchedule to derive keys 
+	3. Verifies the Merkle non-membership proof
+- e2eDNS/LabelExtraction.java: contains the code to extract the unserialized URL from a DNS message sent via DoT, DoH POST or DoH GET
+
 # xJsnark instructions
 
 Original xJsnark repository: https://github.com/akosba/xjsnark 
@@ -14,7 +33,7 @@ xJsnark is written using the MPS IDE. The `xjsnark_zkmb` folder contains the 11 
 
 ## Installation Instructions (MPS)
 
-The MPS IDE is recommended for reading the code. 
+The MPS IDE is recommended for running the code. 
 
 __New MPS installation:__ Install MPS from the "Installation" section of the xJsnark repository. Complete the rest of the instructions and Rebuild the language. When you open the project as instructed, the tutorial model files will be present at `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/`. Now, replace the contents of that folder with the contents of `xjsnark_zkmb/` folder from this repository. Thus, the `<path_to_your_xjsnark>/xjsnark/languages/xjsnark/sandbox/models/xjsnark/` should now contain these eleven .mps files. MPS will automatically read these files when you open the project as usual.
 
