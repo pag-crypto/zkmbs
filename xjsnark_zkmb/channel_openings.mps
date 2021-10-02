@@ -459,19 +459,19 @@
       <node concept="37vLTw" id="6IcGJg3cRYQ" role="3q8w2r">
         <ref role="3cqZAo" node="64TdDMCLS7X" resolve="H5" />
       </node>
-      <node concept="37vLTw" id="6IcGJg3cS1S" role="3q8w2r">
-        <ref role="3cqZAo" node="64TdDMCLS87" resolve="transcript_binder" />
-      </node>
-      <node concept="37vLTw" id="6IcGJg3cS9Y" role="3q8w2r">
+      <node concept="37vLTw" id="5BpCe8KNo5N" role="3q8w2r">
         <ref role="3cqZAo" node="64TdDMCLS7N" resolve="H1" />
       </node>
-      <node concept="37vLTw" id="6IcGJg3cSe9" role="3q8w2r">
+      <node concept="37vLTw" id="5BpCe8KNomb" role="3q8w2r">
+        <ref role="3cqZAo" node="64TdDMCLS87" resolve="transcript_binder" />
+      </node>
+      <node concept="37vLTw" id="5BpCe8KS0uF" role="3q8w2r">
         <ref role="3cqZAo" node="64TdDMCLS8h" resolve="early_data_ct" />
       </node>
     </node>
     <node concept="3qdm3p" id="64TdDMCLS8S" role="jymVt" />
     <node concept="zxlm7" id="64TdDMCLS8V" role="jymVt">
-      <node concept="37vLTw" id="64TdDMCLS8W" role="zxlm6">
+      <node concept="37vLTw" id="5BpCe8KAjxy" role="zxlm6">
         <ref role="3cqZAo" node="64TdDMCLS8t" resolve="PSK" />
       </node>
     </node>
@@ -505,6 +505,7 @@
             <property role="3SKdUp" value="(3) Decrypt the early data ciphertext" />
           </node>
         </node>
+        <node concept="3clFbH" id="5BpCe8JTbtp" role="3cqZAp" />
         <node concept="3cpWs8" id="64TdDMDBz$h" role="3cqZAp">
           <node concept="3cpWsn" id="64TdDMDBz$k" role="3cpWs9">
             <property role="TrG5h" value="value" />
@@ -1400,8 +1401,8 @@
               <property role="TrG5h" value="i" />
               <node concept="10Oyi0" id="7LvGvKSbDbS" role="1tU5fm" />
               <node concept="2OqwBi" id="7LvGvKSbDbV" role="33vP2m">
-                <node concept="37vLTw" id="7LvGvKSbDbW" role="2Oq$k0">
-                  <ref role="3cqZAo" node="64TdDMCLS8h" resolve="early_data_ct" />
+                <node concept="37vLTw" id="5BpCe8KS0Xi" role="2Oq$k0">
+                  <ref role="3cqZAo" node="2OJAT5enfm7" resolve="int_ciphertext" />
                 </node>
                 <node concept="1Rwk04" id="7LvGvKSbDbX" role="2OqNvi" />
               </node>
@@ -1439,6 +1440,16 @@
               </node>
             </node>
           </node>
+          <node concept="3SKdUt" id="5BpCe8Lbl_2" role="3cqZAp">
+            <node concept="3SKdUq" id="5BpCe8LblTQ" role="3SKWNk">
+              <property role="3SKdUp" value="early_data_pt will be padded to 255 bytes" />
+            </node>
+          </node>
+          <node concept="3SKdUt" id="5BpCe8Lbm7c" role="3cqZAp">
+            <node concept="3SKdUq" id="5BpCe8Lbm7e" role="3SKWNk">
+              <property role="3SKdUp" value="just output the prefix of length equal to &quot;int_ciphertext&quot; given as input" />
+            </node>
+          </node>
           <node concept="1Dw8fO" id="64TdDMSYnhf" role="3cqZAp">
             <node concept="3cpWsn" id="64TdDMSYnhg" role="1Duv9x">
               <property role="3TUv4t" value="false" />
@@ -1452,11 +1463,8 @@
               <node concept="37vLTw" id="64TdDMSYnhk" role="3uHU7B">
                 <ref role="3cqZAo" node="64TdDMSYnhg" resolve="i" />
               </node>
-              <node concept="2OqwBi" id="64TdDMSYnhl" role="3uHU7w">
-                <node concept="37vLTw" id="6IcGJg3cTMl" role="2Oq$k0">
-                  <ref role="3cqZAo" node="6IcGJg3cQ5b" resolve="early_data_pt" />
-                </node>
-                <node concept="1Rwk04" id="64TdDMSYnhn" role="2OqNvi" />
+              <node concept="3cmrfG" id="5BpCe8L6w79" role="3uHU7w">
+                <property role="3cmrfH" value="32" />
               </node>
             </node>
             <node concept="3uNrnE" id="64TdDMSYnho" role="1Dwrff">
@@ -1494,7 +1502,6 @@
                   </node>
                 </node>
               </node>
-              <node concept="3clFbH" id="30zMb0dD0ep" role="3cqZAp" />
             </node>
           </node>
         </node>
@@ -4289,8 +4296,8 @@
                       <node concept="2ShNRf" id="7L_Qkl0gMNd" role="37wK5m">
                         <node concept="1pGfFk" id="7L_Qkl0gMNe" role="2ShVmc">
                           <ref role="37wK5l" to="guwi:~FileReader.&lt;init&gt;(java.lang.String)" resolve="FileReader" />
-                          <node concept="37vLTw" id="30zMb0dIzRw" role="37wK5m">
-                            <ref role="3cqZAo" node="30zMb0dIxEO" resolve="test_file_name" />
+                          <node concept="Xl_RD" id="2kaAJx1suU3" role="37wK5m">
+                            <property role="Xl_RC" value="test.txt" />
                           </node>
                         </node>
                       </node>

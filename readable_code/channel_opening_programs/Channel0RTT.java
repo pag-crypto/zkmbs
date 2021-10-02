@@ -96,14 +96,15 @@ Program Channel0RTT {
         for (int i = 0; i < int_ciphertext.length; i++) { 
           early_data_ct[i].val = BigInteger.valueOf(int_ciphertext[i]); 
         } 
-        for (int i = early_data_ct.length; i < 255; i++) { 
+        for (int i = int_ciphertext.length; i < 255; i++) { 
           early_data_ct[i].val = BigInteger.ZERO; 
         } 
          
     } 
     post { 
         System.out.println("Circuit Output: "); 
-        for (int i = 0; i < early_data_pt.length; i++) { 
+        // should be the length of int_ciphertext
+        for (int i = 0; i < 32; i++) { 
           System.out.print(String.format("%1$02x", early_data_pt[i].val)); 
            
         } 
