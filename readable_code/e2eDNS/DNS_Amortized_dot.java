@@ -125,7 +125,7 @@ Program DNS_Amortized_dot {
           string iv_str = "cf73d63f3ac141740b84c7fd"; 
            
           // query is amazon.com 
-          string dns_ct_str = "50e2daf49a12e78a4eed77fa7bb76e462287446b510f61f50c3f1c"; 
+          string dns_ct_str = "50e783449a12e78a4eed77fa7bb76c467fcb4d065a68029a603f1d4e701f"; 
            
           // Convert the strings to circuit input types 
            
