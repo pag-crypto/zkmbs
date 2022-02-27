@@ -1,0 +1,42 @@
+#!/usr/bin/bash
+
+file=$(mktemp)
+progress() {
+  pc=0;
+  while [ -e $file ]
+    do
+      echo -ne "$pc sec\033[0K\r"
+      sleep 1
+      ((pc++))
+    done
+}
+
+ckt="$1"
+
+fullname="$1"
+if [ ${ckt::1} == 'O' ] 
+then
+	fullname="e2eODOH.$1"
+elif [ ${ckt::1} == 'D' ] 
+then
+	fullname="e2eDNS.$1"
+elif [ ${ckt::1} == 'C' ] 
+then
+	fullname="channel_openings.$1"
+elif [ ${ckt::1} == 'F' ] 
+then
+	fullname="e2eFirewall.$1"
+fi
+
+echo "Starting circuit generator and optimizer..." 
+echo "This may take several minutes..."
+progress &
+
+/usr/bin/time -f "Time taken: %E min:sec \nMemory used: %M KB" java -Xmx10g -cp bin:xjsnark_backend.jar xjsnark.$fullname > logs/$1_circuit.txt
+
+echo "Circuit stored in circuits/$1.arith" 
+echo "Input file stored in circuits/$1.in" 
+
+grep -oE "Total Number of Constraints.*$" log.txt
+
+rm -f $file

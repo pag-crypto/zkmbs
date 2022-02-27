@@ -1,0 +1,3 @@
+#!/bin/bash 
+
+javac -d bin -cp xjsnark_backend.jar $(find ./* | grep ".java$")
