@@ -19,11 +19,11 @@ public class ChannelAmortized extends CircuitGenerator {
 
   public static void main(String[] args) {
     Config.arithOptimizerNumThreads = 8;
-    Config.arithOptimizerIncrementalMode = false;
+    Config.arithOptimizerIncrementalMode = true;
     Config.multivariateExpressionMinimization = false;
 
     Config.writeCircuits = true;
-    Config.outputFilesPath = ".";
+    Config.outputFilesPath = "./circuits";
 
     new ChannelAmortized();
   }

@@ -20,9 +20,9 @@ public class DNS_Shortcut_dot extends CircuitGenerator {
 
 
   public static void main(String[] args) {
-    Config.multivariateExpressionMinimization = false;
+    Config.multivariateExpressionMinimization = true;
     Config.writeCircuits = true;
-    Config.outputFilesPath = ".";
+    Config.outputFilesPath = "./circuits";
 
     new DNS_Shortcut_dot();
   }

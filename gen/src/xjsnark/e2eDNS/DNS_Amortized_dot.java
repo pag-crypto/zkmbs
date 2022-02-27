@@ -22,11 +22,10 @@ public class DNS_Amortized_dot extends CircuitGenerator {
 
   public static void main(String[] args) {
     Config.arithOptimizerNumThreads = 8;
-    Config.arithOptimizerIncrementalMode = false;
-    Config.multivariateExpressionMinimization = false;
+    Config.multivariateExpressionMinimization = true;
 
     Config.writeCircuits = true;
-    Config.outputFilesPath = ".";
+    Config.outputFilesPath = "./circuits";
 
     new DNS_Amortized_dot();
   }
