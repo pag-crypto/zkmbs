@@ -46,7 +46,7 @@ public class DNS_Amortized_dot extends CircuitGenerator {
           String iv_str = "cf73d63f3ac141740b84c7fd";
 
           // query is amazon.com 
-          String dns_ct_str = "50e2daf49a12e78a4eed77fa7bb76e462287446b510f61f50c3f1c";
+          String dns_ct_str = "50e783449a12e78a4eed77fa7bb76c467fcb4d065a68029a603f1d4e701f";
 
           // Convert the strings to circuit input types 
 
@@ -182,6 +182,7 @@ public class DNS_Amortized_dot extends CircuitGenerator {
   @Override
   public void __defineInputs() {
     super.__defineInputs();
+    SN = UnsignedInteger.createInput(this, 64);
     comm = FieldElement.createInput(this, new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"));
     root = FieldElement.createInput(this, new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"));
 
