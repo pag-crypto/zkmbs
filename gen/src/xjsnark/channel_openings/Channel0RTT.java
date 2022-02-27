@@ -55,20 +55,24 @@ public class Channel0RTT extends CircuitGenerator {
         }
 
 
-        int[] int_ciphertext = {217, 37, 254, 153, 246, 129, 12, 57, 234, 105, 207, 149, 161, 123, 236, 111, 92, 174, 236, 18, 110, 51, 147, 37, 192, 78, 33, 106, 217, 126, 122, 50};
-        for (int i = 0; i < int_ciphertext.length; i++) {
-          early_data_ct[i].mapValue(BigInteger.valueOf(int_ciphertext[i]), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
+
+        String dns_ct_line = "0000000000000000000000000000000000000000000000000000000000000000";
+
+        for (int i = 0; i < dns_ct_line.length() / 2; i = i + 1) {
+          early_data_ct[i].mapValue(new BigInteger(dns_ct_line.substring(2 * i, 2 * i + 2), 16), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
         }
-        for (int i = early_data_ct.length; i < 255; i++) {
-          early_data_ct[i].mapValue(BigInteger.ZERO, CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
+        for (int i = dns_ct_line.length() / 2; i < 255; i = i + 1) {
+          early_data_ct[i].mapValue(new BigInteger("0"), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
         }
+
 
       }
       public void post() {
         System.out.println("Circuit Output: ");
-        for (int i = 0; i < early_data_pt.length; i++) {
+        // early_data_pt will be padded to 255 bytes 
+        // just output the prefix of length equal to "int_ciphertext" given as input 
+        for (int i = 0; i < 32; i++) {
           System.out.print(String.format("%1$02x", early_data_pt[i].getValueFromEvaluator(CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator())));
-
         }
       }
 
@@ -100,8 +104,8 @@ public class Channel0RTT extends CircuitGenerator {
 
 
     H5 = (UnsignedInteger[]) UnsignedInteger.createInputArray(CircuitGenerator.__getActiveCircuitGenerator(), Util.getArrayDimensions(H5), 8);
-    transcript_binder = (UnsignedInteger[]) UnsignedInteger.createInputArray(CircuitGenerator.__getActiveCircuitGenerator(), Util.getArrayDimensions(transcript_binder), 8);
     H1 = (UnsignedInteger[]) UnsignedInteger.createInputArray(CircuitGenerator.__getActiveCircuitGenerator(), Util.getArrayDimensions(H1), 8);
+    transcript_binder = (UnsignedInteger[]) UnsignedInteger.createInputArray(CircuitGenerator.__getActiveCircuitGenerator(), Util.getArrayDimensions(transcript_binder), 8);
     early_data_ct = (UnsignedInteger[]) UnsignedInteger.createInputArray(CircuitGenerator.__getActiveCircuitGenerator(), Util.getArrayDimensions(early_data_ct), 8);
 
 
@@ -180,7 +184,8 @@ public class Channel0RTT extends CircuitGenerator {
     // (1) Verify that the PSK used is correct by compared the derived and transcript binders 
     // (2) Derive the client application traffic key 
     // (3) Decrypt the early data ciphertext 
-    UnsignedInteger[] value = TLSKeySchedule.get0RTT(PSK, H1, H5, transcript_binder, early_data_ct);
+
+    UnsignedInteger[] value = TLSKeySchedule.get0RTT(PSK, H1, H5, transcript_binder, early_data_ct)[0];
 
     early_data_pt = value;
   }

@@ -15,7 +15,9 @@ public class TLSKeySchedule {
 
   // NOTATION is from https://eprint.iacr.org/2020/1044.pdf
 
-  // This class contains functions that compute the different types of TLS1.3 Key Schedule
+
+  // This class contains functions that derive the TLS 1.3 client's application key 
+  // given the following inputs:
   // Input: 
   //   - handshake transcript
   //   - client's secrets (PSK and/or DHE share)
@@ -48,7 +50,7 @@ public class TLSKeySchedule {
   // (1) Using the PSK and transcript hashes, compute the binder
   // (2) Verify that it is equal to the REAL_BINDER from the transcript
   // (3) Now, compute the traffic keys and decrypt the ciphertext
-  public static UnsignedInteger[] get0RTT(UnsignedInteger[] PSK, UnsignedInteger[] H_1, UnsignedInteger[] H_5, UnsignedInteger[] REAL_BINDER, UnsignedInteger[] dns_ciphertext) {
+  public static UnsignedInteger[][] get0RTT(UnsignedInteger[] PSK, UnsignedInteger[] H_1, UnsignedInteger[] H_5, UnsignedInteger[] REAL_BINDER, UnsignedInteger[] dns_ciphertext) {
 
     UnsignedInteger[] ES = HKDF.hkdf_extract(Util.new_zero_array(32), PSK);
 
@@ -71,7 +73,7 @@ public class TLSKeySchedule {
 
     // decrypt the plaintext 
     UnsignedInteger[] dns_plaintext = AES_GCM.aes_gcm_decrypt(tk_early, iv_early, dns_ciphertext);
-    return dns_plaintext;
+    return new UnsignedInteger[][]{dns_plaintext, tk_early, iv_early};
   }
 
   // This is the baseline 1RTT handshake key derivation
@@ -95,7 +97,7 @@ public class TLSKeySchedule {
 
     // This function's goals: 
     // (1) Verify that G^sk = A where G is the generator of secp256 
-    // (2) Compute B^sk to obtain the DHE secret 
+    // (2) Compute B^sk to obtain the DHE secret  
     UnsignedInteger[] DHE = ECDHE.DHExchange(Ax.copy(), Ay.copy(), Bx.copy(), By.copy(), DHE_share.copy(256));
 
     UnsignedInteger[] HS = HKDF.hkdf_extract(dES, DHE);
