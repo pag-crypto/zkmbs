@@ -1,0 +1,64 @@
+#!/usr/bin/bash
+
+file=$(mktemp)
+progress() { pc=0;
+  while [ -e $file ]
+    do
+      echo -ne "$pc sec\033[0K\r"
+      sleep 1
+      ((pc++))
+    done
+}
+
+ckt="$1"
+
+packagename="$1"
+if [ ${ckt::1} == 'O' ] 
+then
+	packagename="e2eODOH"
+elif [ ${ckt::1} == 'D' ] 
+then
+	packagename="e2eDNS"
+elif [ ${ckt::1} == 'C' ] 
+then
+	packagename="channel_openings"
+elif [ ${ckt::1} == 'F' ] 
+then
+	packagename="e2eFirewall"
+fi
+
+optimized=true
+if [[ "$1" == "ChannelBaseline" ]]
+then
+	optimized=false
+fi
+
+fullname="$packagename.$1"
+
+if ! [ -f "src/xjsnark/$packagename/$1.java" ]; then
+	echo "ERROR: This circuit doesn't exist"
+	exit 1
+fi
+
+echo "Creating SRS, running prove, and verify..." 
+echo "This may take several minutes..."
+progress &
+
+/usr/bin/time -f "Time taken: %E min:sec \nMemory used: %M KB"  ../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
+
+rm -f $file
+
+echo "Log stored in logs/$1_proof.txt"
+
+log_file=$1_proof.txt
+
+prover_time="$(grep -o "(leave) Call to r1cs_gg_ppzksnark_prover.*\[[0-9]*\.\?[0-9]*s" logs/$1_proof.txt | grep -o "[0-9]\+\.[0-9]\+")"
+
+verifier_time="$(grep -o "(leave) Call to r1cs_gg_ppzksnark_online_verifier_strong_IC.*\[[0-9]*\.\?[0-9]*s" logs/$1_proof.txt | tail -1 | grep -o "[0-9]\+\.[0-9]\+")"
+
+verifier_time_ms=$(echo "1000*$verifier_time" | bc)
+
+printf "Prover time : %.2f s\n" $prover_time
+printf "Verify time : %.2f ms\n" $verifier_time_ms
+
+

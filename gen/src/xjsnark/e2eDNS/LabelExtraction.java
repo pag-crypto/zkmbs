@@ -13,47 +13,64 @@ public class LabelExtraction {
 
   public static final int[] b64url_encoding_table_int = {65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 45, 95};
 
+
+  // This table returns the 8-bit ASCII value encoded by the given base64 character
+  // where the base64 character is itself an 8-bit ASCII value
+  // The first 43 characters are junk values that are never used. Setting them to 0 causes an error in xJsnark's optimizer,
+  // so we just used random junk values instead.
   public static final int[] base64_decode_table = {0xab, 0x76, 0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0, 0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15, 0x04, 0xc7, 0x23, 0xc3, 0x18, 0x96, 0x05, 0x9a, 0x11, 62, 0, 0, 0, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 0, 0, 0, 0, 0, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 0, 0, 0, 0, 0};
 
 
   public static SmartMemory<UnsignedInteger> b64_decode_ram;
 
-
-  // POST DATA
+  // ASCII representations of the strings "POST" and "GET "
   public static final int[] first_four_post_ints = {80, 79, 83, 84};
   public static final int[] first_four_get_bytes_int = {71, 69, 84, 32};
 
+  // ASCII for carriage return and line feed characters
   public static final int cr_int = 13;
   public static final int lf_int = 10;
 
+  // The assumed maximum length of the HTTP mesages in ASCII (and the corresponding base64 size)
   public static final int HTTP_REQUEST_MAX_LENGTH = 500;
   public static final int DNS_QUERY_MAX_LENGTH = 255;
-  // Had to compute this in a weird way because MPS is stupid, and won't allow typecasts
   public static final int DNS_QUERY_MAX_B64_LENGTH = 344;
 
-  public static UnsignedInteger[][] extractPeriodFormatFromDNSMessage(UnsignedInteger[] dns_message, int offset) {
+
+  // This function takes an input DNS question that is serialized in the form "7example3com"
+  // and returns ".example.com"
+  // The function is more powerful and could be modified to return the lables separately
+  // but it is sufficient to return the concatenated string for the DNS application.
+  // The length is returned as it is used in reversing the string.
+
+  // offset - the byte index of the start of the question within the input dns_message
+  public static UnsignedInteger[][] deserializeQuestion(UnsignedInteger[] dns_message, int offset) {
     UnsignedInteger skip_index = UnsignedInteger.instantiateFrom(8, offset).copy(8);
 
     UnsignedInteger[] all_labels = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{255}, 8);
 
+    // We keep track of the  
     UnsignedInteger true_length = UnsignedInteger.instantiateFrom(8, 0).copy(8);
 
+    // To circumvent an error we encountered with xJsnark, 
+    // we use this variable to avoid having a third nested if loop 
     UnsignedInteger keep_reading = UnsignedInteger.instantiateFrom(1, 1).copy(1);
-
 
     for (int i = 0; i + offset < 255; i++) {
       {
-        Bit bit_a0j0v = UnsignedInteger.instantiateFrom(8, i + offset).isNotEqualTo(skip_index).copy();
-        boolean c_a0j0v = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0j0v);
-        if (c_a0j0v) {
-          if (bit_a0j0v.getConstantValue()) {
+        Bit bit_a0l0ib = UnsignedInteger.instantiateFrom(8, i + offset).isNotEqualTo(skip_index).copy();
+        boolean c_a0l0ib = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0l0ib);
+        if (c_a0l0ib) {
+          if (bit_a0l0ib.getConstantValue()) {
+            // keep_reading will either be 1 or 0 
+            // So either the recorded value will be the array element or 0. 
             all_labels[i].assign(dns_message[i + offset].mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
           } else {
             {
-              Bit bit_a0a0a0a2a0a9a12 = dns_message[i + offset].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
-              boolean c_a0a0a0a2a0a9a12 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a9a12);
-              if (c_a0a0a0a2a0a9a12) {
-                if (bit_a0a0a0a2a0a9a12.getConstantValue()) {
+              Bit bit_a0a0a0a2a0a11a43 = dns_message[i + offset].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
+              boolean c_a0a0a0a2a0a11a43 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a11a43);
+              if (c_a0a0a0a2a0a11a43) {
+                if (bit_a0a0a0a2a0a11a43.getConstantValue()) {
                   true_length.assign(true_length.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                   skip_index.assign(skip_index.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                   all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -63,7 +80,7 @@ public class LabelExtraction {
                 }
               } else {
                 ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a0a9a12);
+                ConditionalScopeTracker.push(bit_a0a0a0a2a0a11a43);
                 true_length.assign(true_length.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 skip_index.assign(skip_index.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -82,7 +99,9 @@ public class LabelExtraction {
           }
         } else {
           ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0j0v);
+          ConditionalScopeTracker.push(bit_a0l0ib);
+          // keep_reading will either be 1 or 0 
+          // So either the recorded value will be the array element or 0. 
           all_labels[i].assign(dns_message[i + offset].mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
 
           ConditionalScopeTracker.pop();
@@ -90,10 +109,10 @@ public class LabelExtraction {
           ConditionalScopeTracker.push(new Bit(true));
 
           {
-            Bit bit_a0a0a9a12_0 = dns_message[i + offset].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
-            boolean c_a0a0a9a12_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a9a12_0);
-            if (c_a0a0a9a12_0) {
-              if (bit_a0a0a9a12_0.getConstantValue()) {
+            Bit bit_a0a0a11a43_0 = dns_message[i + offset].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
+            boolean c_a0a0a11a43_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a11a43_0);
+            if (c_a0a0a11a43_0) {
+              if (bit_a0a0a11a43_0.getConstantValue()) {
                 true_length.assign(true_length.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 skip_index.assign(skip_index.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -103,7 +122,7 @@ public class LabelExtraction {
               }
             } else {
               ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a0a9a12_0);
+              ConditionalScopeTracker.push(bit_a0a0a11a43_0);
               true_length.assign(true_length.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
               skip_index.assign(skip_index.add(dns_message[i + offset]).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
               all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -125,12 +144,12 @@ public class LabelExtraction {
       }
     }
 
-
     return new UnsignedInteger[][]{all_labels, new UnsignedInteger[]{true_length.copy(8)}};
   }
 
 
-  public static UnsignedInteger[][] extractPeriodFormatFromDNSMessageVaryingOffset(UnsignedInteger[] dns_message, UnsignedInteger offset) {
+  // Same as the above function but with a variable offset (given as uint_8) type input
+  public static UnsignedInteger[][] deserializeQuestion(UnsignedInteger[] dns_message, UnsignedInteger offset) {
 
     SmartMemory<UnsignedInteger> dns_message_ram = new SmartMemory(dns_message, UnsignedInteger.__getClassRef(), new Object[]{"8"});
 
@@ -143,20 +162,19 @@ public class LabelExtraction {
     UnsignedInteger keep_reading = UnsignedInteger.instantiateFrom(1, 1).copy(1);
 
 
-
     for (int i = 0; i < 255; i++) {
       {
-        Bit bit_a0n0y = UnsignedInteger.instantiateFrom(8, i).add(offset).isNotEqualTo(skip_index).copy();
-        boolean c_a0n0y = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0n0y);
-        if (c_a0n0y) {
-          if (bit_a0n0y.getConstantValue()) {
+        Bit bit_a0m0mb = UnsignedInteger.instantiateFrom(8, i).add(offset).isNotEqualTo(skip_index).copy();
+        boolean c_a0m0mb = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0m0mb);
+        if (c_a0m0mb) {
+          if (bit_a0m0mb.getConstantValue()) {
             all_labels[i].assign(UnsignedInteger.instantiateFrom(8, dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset))).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
           } else {
             {
-              Bit bit_a0a0a0a2a0a31a42 = dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)).isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
-              boolean c_a0a0a0a2a0a31a42 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a31a42);
-              if (c_a0a0a0a2a0a31a42) {
-                if (bit_a0a0a0a2a0a31a42.getConstantValue()) {
+              Bit bit_a0a0a0a2a0a21a83 = dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)).isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
+              boolean c_a0a0a0a2a0a21a83 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a21a83);
+              if (c_a0a0a0a2a0a21a83) {
+                if (bit_a0a0a0a2a0a21a83.getConstantValue()) {
                   true_length.assign(true_length.add(UnsignedInteger.instantiateFrom(8, dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                   skip_index.assign(skip_index.add(dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                   all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -166,7 +184,7 @@ public class LabelExtraction {
                 }
               } else {
                 ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a0a31a42);
+                ConditionalScopeTracker.push(bit_a0a0a0a2a0a21a83);
                 true_length.assign(true_length.add(UnsignedInteger.instantiateFrom(8, dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 skip_index.assign(skip_index.add(dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -185,7 +203,7 @@ public class LabelExtraction {
           }
         } else {
           ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0n0y);
+          ConditionalScopeTracker.push(bit_a0m0mb);
           all_labels[i].assign(UnsignedInteger.instantiateFrom(8, dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset))).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
 
           ConditionalScopeTracker.pop();
@@ -193,10 +211,10 @@ public class LabelExtraction {
           ConditionalScopeTracker.push(new Bit(true));
 
           {
-            Bit bit_a0a0a31a42_0 = dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)).isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
-            boolean c_a0a0a31a42_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a31a42_0);
-            if (c_a0a0a31a42_0) {
-              if (bit_a0a0a31a42_0.getConstantValue()) {
+            Bit bit_a0a0a21a83_0 = dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)).isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).copy();
+            boolean c_a0a0a21a83_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a21a83_0);
+            if (c_a0a0a21a83_0) {
+              if (bit_a0a0a21a83_0.getConstantValue()) {
                 true_length.assign(true_length.add(UnsignedInteger.instantiateFrom(8, dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 skip_index.assign(skip_index.add(dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
                 all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -206,7 +224,7 @@ public class LabelExtraction {
               }
             } else {
               ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a0a31a42_0);
+              ConditionalScopeTracker.push(bit_a0a0a21a83_0);
               true_length.assign(true_length.add(UnsignedInteger.instantiateFrom(8, dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset)))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
               skip_index.assign(skip_index.add(dns_message_ram.read(UnsignedInteger.instantiateFrom(8, i).add(offset))).add(UnsignedInteger.instantiateFrom(8, 1)), 8);
               all_labels[i].assign(UnsignedInteger.instantiateFrom(8, 46).mul(UnsignedInteger.instantiateFrom(8, keep_reading)), 8);
@@ -228,20 +246,19 @@ public class LabelExtraction {
       }
     }
 
-
-
     return new UnsignedInteger[][]{all_labels, new UnsignedInteger[]{true_length.copy(8)}};
   }
 
 
-
+  // This takes a DoT application data message
+  // and returns the deserialized URL that was queried: ".example.com"
   public static UnsignedInteger[][] extractDoT(UnsignedInteger[] dns_message) {
 
-
-    return extractPeriodFormatFromDNSMessage(dns_message, 14);
+    return deserializeQuestion(dns_message, 14);
 
   }
 
+  // This is the above function but also reverses the URL: "moc.elpmaxe."
   public static UnsignedInteger[][] extractDoTReverse(UnsignedInteger[] dns_message) {
 
     UnsignedInteger[][] return_values = extractDoT(dns_message);
@@ -251,19 +268,18 @@ public class LabelExtraction {
 
     UnsignedInteger[] reverse_label = reverse(all_labels, true_length.copy(8));
 
-
-    // first verify that the query is a p 
-
     return new UnsignedInteger[][]{reverse_label, new UnsignedInteger[]{true_length.copy(8)}};
   }
 
 
-  private static void check_method(SmartMemory<UnsignedInteger> http_bytes_ram, UnsignedInteger[] first_four_post) {
+  // This verifies that the HTTP message starts with "POST" or "GET " 
+  private static void check_method(SmartMemory<UnsignedInteger> http_bytes_ram, UnsignedInteger[] first_four_bytes) {
     for (int i = 0; i < 4; i++) {
-      http_bytes_ram.read(i).forceEqual(first_four_post[i]);
+      http_bytes_ram.read(i).forceEqual(first_four_bytes[i]);
     }
   }
 
+  // Checks that the sequence CR || LF || CR || LF is present at the given index.
   private static void check_crlf_index(SmartMemory<UnsignedInteger> http_bytes_ram, UnsignedInteger crlf_index) {
 
     UnsignedInteger cr = UnsignedInteger.instantiateFrom(8, 13).copy(8);
@@ -276,24 +292,25 @@ public class LabelExtraction {
   }
 
 
+  // This takes a DoH POST application data message
+  // and returns the deserialized URL that was queried: ".example.com"
   public static UnsignedInteger[][] extractDoHPOST(UnsignedInteger[] http_bytes, UnsignedInteger crlf_index) {
 
     SmartMemory<UnsignedInteger> http_bytes_ram = new SmartMemory(http_bytes, UnsignedInteger.__getClassRef(), new Object[]{"8"});
     UnsignedInteger[] first_four_post = UnsignedInteger.instantiateFrom(8, first_four_post_ints);
 
 
-    // first verify that the query is a post 
     check_method(http_bytes_ram, first_four_post);
 
     check_crlf_index(http_bytes_ram, crlf_index.copy(16));
 
-    // now, the skip index is simply the crlf_index + 4 
 
-    UnsignedInteger[][] return_values = extractPeriodFormatFromDNSMessageVaryingOffset(http_bytes, crlf_index.add(UnsignedInteger.instantiateFrom(8, 16)).copy(8));
+    UnsignedInteger[][] return_values = deserializeQuestion(http_bytes, crlf_index.add(UnsignedInteger.instantiateFrom(8, 16)).copy(8));
 
     return return_values;
   }
 
+  // This is the above function but also reverses the URL: "moc.elpmaxe."
   public static UnsignedInteger[][] extractDoHPOSTReverse(UnsignedInteger[] http_bytes, UnsignedInteger crlf_index) {
 
     UnsignedInteger[][] return_values = extractDoHPOST(http_bytes, crlf_index.copy(8));
@@ -303,13 +320,11 @@ public class LabelExtraction {
 
     UnsignedInteger[] reverse_label = reverse(all_labels, true_length.copy(8));
 
-
-    // first verify that the query is a p 
-
     return new UnsignedInteger[][]{reverse_label, new UnsignedInteger[]{true_length.copy(8)}};
   }
 
 
+  // Maps a base64 character to the ASCII value 
   public static UnsignedInteger decode_base64_character(UnsignedInteger ch) {
     UnsignedInteger output = new UnsignedInteger(8, new BigInteger("0"));
 
@@ -318,8 +333,8 @@ public class LabelExtraction {
     return output;
   }
 
-  // GET AND ALL THE BASE64 STUFF
-
+  // Given four base64 characters,
+  // this function returns the three ASCII characters they encode.
   public static UnsignedInteger[] convert_one_base64_block(UnsignedInteger[] input) {
 
     UnsignedInteger one_block = UnsignedInteger.instantiateFrom(24, 0).copy(24);
@@ -340,7 +355,8 @@ public class LabelExtraction {
     return output;
   }
 
-  // input has length 344
+  // Given a base64 string
+  // this function returns the ASCII string encoded by it.
   public static UnsignedInteger[] convert_base64_to_ascii(UnsignedInteger[] input, UnsignedInteger length) {
 
     UnsignedInteger[] output = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{258}, 8);
@@ -365,7 +381,8 @@ public class LabelExtraction {
   }
 
 
-  // http bytes has to have length more than 255+19
+  // This takes a DoH GET application data message
+  // and returns the deserialized URL that was queried: ".example.com"
   public static UnsignedInteger[][] extractDoHGET(UnsignedInteger[] http_bytes) {
 
     SmartMemory<UnsignedInteger> http_bytes_ram = new SmartMemory(http_bytes, UnsignedInteger.__getClassRef(), new Object[]{"8"});
@@ -384,15 +401,15 @@ public class LabelExtraction {
     UnsignedInteger wf_length = UnsignedInteger.instantiateFrom(16, 0).copy(16);
     for (int i = 0; i < DNS_QUERY_MAX_B64_LENGTH; i++) {
       {
-        Bit bit_a0p0cc = seen_space.isEqualTo(UnsignedInteger.instantiateFrom(1, 0)).copy();
-        boolean c_a0p0cc = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0p0cc);
-        if (c_a0p0cc) {
-          if (bit_a0p0cc.getConstantValue()) {
+        Bit bit_a0p0ad = seen_space.isEqualTo(UnsignedInteger.instantiateFrom(1, 0)).copy();
+        boolean c_a0p0ad = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0p0ad);
+        if (c_a0p0ad) {
+          if (bit_a0p0ad.getConstantValue()) {
             {
-              Bit bit_a0a0a2a0a51a45 = http_bytes[i + 19].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 32)).copy();
-              boolean c_a0a0a2a0a51a45 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a2a0a51a45);
-              if (c_a0a0a2a0a51a45) {
-                if (bit_a0a0a2a0a51a45.getConstantValue()) {
+              Bit bit_a0a0a2a0a51a87 = http_bytes[i + 19].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 32)).copy();
+              boolean c_a0a0a2a0a51a87 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a2a0a51a87);
+              if (c_a0a0a2a0a51a87) {
+                if (bit_a0a0a2a0a51a87.getConstantValue()) {
                   wire_format_base64[i].assign(http_bytes[i + 19], 8);
                   wf_length.assign(wf_length.add(UnsignedInteger.instantiateFrom(16, 1)), 16);
                 } else {
@@ -401,7 +418,7 @@ public class LabelExtraction {
                 }
               } else {
                 ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a2a0a51a45);
+                ConditionalScopeTracker.push(bit_a0a0a2a0a51a87);
                 wire_format_base64[i].assign(http_bytes[i + 19], 8);
                 wf_length.assign(wf_length.add(UnsignedInteger.instantiateFrom(16, 1)), 16);
 
@@ -421,12 +438,12 @@ public class LabelExtraction {
           }
         } else {
           ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0p0cc);
+          ConditionalScopeTracker.push(bit_a0p0ad);
           {
-            Bit bit_a0a0p0cc = http_bytes[i + 19].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 32)).copy();
-            boolean c_a0a0p0cc = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0p0cc);
-            if (c_a0a0p0cc) {
-              if (bit_a0a0p0cc.getConstantValue()) {
+            Bit bit_a0a0p0ad = http_bytes[i + 19].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 32)).copy();
+            boolean c_a0a0p0ad = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0p0ad);
+            if (c_a0a0p0ad) {
+              if (bit_a0a0p0ad.getConstantValue()) {
                 wire_format_base64[i].assign(http_bytes[i + 19], 8);
                 wf_length.assign(wf_length.add(UnsignedInteger.instantiateFrom(16, 1)), 16);
               } else {
@@ -435,7 +452,7 @@ public class LabelExtraction {
               }
             } else {
               ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a0p0cc);
+              ConditionalScopeTracker.push(bit_a0a0p0ad);
               wire_format_base64[i].assign(http_bytes[i + 19], 8);
               wf_length.assign(wf_length.add(UnsignedInteger.instantiateFrom(16, 1)), 16);
 
@@ -465,7 +482,7 @@ public class LabelExtraction {
     UnsignedInteger[] converted;
     converted = convert_base64_to_ascii(wire_format_base64, wf_length.copy(16));
 
-    UnsignedInteger[][] return_values = extractPeriodFormatFromDNSMessage(converted, 12);
+    UnsignedInteger[][] return_values = deserializeQuestion(converted, 12);
     UnsignedInteger[] all_labels = return_values[0];
     UnsignedInteger true_length = return_values[1][0].copy(8);
 
@@ -473,6 +490,7 @@ public class LabelExtraction {
     return new UnsignedInteger[][]{all_labels, return_values[1]};
   }
 
+  // This is the above function but also reverses the URL: "moc.elpmaxe."
   public static UnsignedInteger[][] extractDoHGETReverse(UnsignedInteger[] http_bytes) {
 
 
@@ -488,6 +506,9 @@ public class LabelExtraction {
     return new UnsignedInteger[][]{reverse_label, new UnsignedInteger[]{true_length.copy(8)}};
   }
 
+  // Function to reverse a given string
+  // The input is padded with 0s to reach a fixed length
+  // so the actual length to be reversed is given as input.
   public static UnsignedInteger[] reverse(UnsignedInteger[] input, UnsignedInteger rev_length) {
 
     SmartMemory<UnsignedInteger> input_ram = new SmartMemory(input, UnsignedInteger.__getClassRef(), new Object[]{"8"});
@@ -495,17 +516,17 @@ public class LabelExtraction {
 
     for (int i = 0; i < input.length; i++) {
       {
-        Bit bit_a0e0gc = UnsignedInteger.instantiateFrom(8, i).isLessThan(rev_length).copy();
-        boolean c_a0e0gc = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0e0gc);
-        if (c_a0e0gc) {
-          if (bit_a0e0gc.getConstantValue()) {
+        Bit bit_a0e0id = UnsignedInteger.instantiateFrom(8, i).isLessThan(rev_length).copy();
+        boolean c_a0e0id = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0e0id);
+        if (c_a0e0id) {
+          if (bit_a0e0id.getConstantValue()) {
             output[i].assign(input_ram.read(UnsignedInteger.instantiateFrom(8, rev_length.subtract(UnsignedInteger.instantiateFrom(8, i)).subtract(UnsignedInteger.instantiateFrom(8, 1)))), 8);
           } else {
 
           }
         } else {
           ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0e0gc);
+          ConditionalScopeTracker.push(bit_a0e0id);
           output[i].assign(input_ram.read(UnsignedInteger.instantiateFrom(8, rev_length.subtract(UnsignedInteger.instantiateFrom(8, i)).subtract(UnsignedInteger.instantiateFrom(8, 1)))), 8);
 
           ConditionalScopeTracker.pop();
@@ -522,7 +543,7 @@ public class LabelExtraction {
     return output;
   }
 
-
+  // Concatenate two strings
   public static UnsignedInteger[] concat(UnsignedInteger[] a1, UnsignedInteger[] a2) {
     int l1 = a1.length;
     int l2 = a2.length;

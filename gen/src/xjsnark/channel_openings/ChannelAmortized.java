@@ -19,8 +19,7 @@ public class ChannelAmortized extends CircuitGenerator {
 
   public static void main(String[] args) {
     Config.arithOptimizerNumThreads = 8;
-    Config.arithOptimizerIncrementalMode = true;
-    Config.multivariateExpressionMinimization = false;
+    Config.multivariateExpressionMinimization = true;
 
     Config.writeCircuits = true;
     Config.outputFilesPath = "./circuits";
@@ -209,7 +208,7 @@ public class ChannelAmortized extends CircuitGenerator {
     output = AES_GCM.aes_gcm_decrypt(key, iv_record, appl_ct);
 
     // For logging output 
-    output_Fp.assign(comm_cal);
+    // output_Fp.assign(comm_cal);
 
   }
 
