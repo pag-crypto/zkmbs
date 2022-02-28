@@ -1,8 +1,7 @@
 #!/usr/bin/bash
 
 file=$(mktemp)
-progress() {
-  pc=0;
+progress() { pc=0;
   while [ -e $file ]
     do
       echo -ne "$pc sec\033[0K\r"
@@ -13,19 +12,32 @@ progress() {
 
 ckt="$1"
 
-fullname="$1"
+packagename="$1"
 if [ ${ckt::1} == 'O' ] 
 then
-	fullname="e2eODOH.$1"
+	packagename="e2eODOH"
 elif [ ${ckt::1} == 'D' ] 
 then
-	fullname="e2eDNS.$1"
+	packagename="e2eDNS"
 elif [ ${ckt::1} == 'C' ] 
 then
-	fullname="channel_openings.$1"
+	packagename="channel_openings"
 elif [ ${ckt::1} == 'F' ] 
 then
-	fullname="e2eFirewall.$1"
+	packagename="e2eFirewall"
+fi
+
+optimized=true
+if [[ "$1" == "ChannelBaseline" ]]
+then
+	optimized=false
+fi
+
+fullname="$packagename.$1"
+
+if ! [ -f "src/xjsnark/$packagename/$1.java" ]; then
+	echo "ERROR: This circuit doesn't exist"
+	exit 1
 fi
 
 echo "Starting circuit generator and optimizer..." 
@@ -34,9 +46,19 @@ progress &
 
 /usr/bin/time -f "Time taken: %E min:sec \nMemory used: %M KB" java -Xmx10g -cp bin:xjsnark_backend.jar xjsnark.$fullname > logs/$1_circuit.txt
 
-echo "Circuit stored in circuits/$1.arith" 
-echo "Input file stored in circuits/$1.in" 
-
-grep -oE "Total Number of Constraints.*$" log.txt
-
 rm -f $file
+
+if [[ optimized=true ]]; then
+	echo "Circuit stored in circuits/$1_optimized.arith" 
+	echo "Input file stored in circuits/$1_Sample_Run1_optimized.in" 
+	num_con="$(grep  "after  " logs/$1_circuit.txt | awk '{print $NF}')"
+else 
+	echo "Circuit stored in circuits/$1.arith" 
+	echo "Input file stored in circuits/$1_Sample_Run1.in" 
+	num_con="$(grep  "Total Number of Constraints" logs/$1_circuit.txt | awk '{print $NF}')"
+fi
+
+printf "Number of constraints: %.3e\n", $num_con
+
+# echo "Number of constraints = $num_con"
+
