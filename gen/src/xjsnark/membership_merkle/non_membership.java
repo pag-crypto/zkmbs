@@ -48,16 +48,19 @@ public class non_membership {
     return UnsignedInteger.instantiateFrom(1, 1);
   }
 
-  // wildcard non_membership proof function
-  // It takes uint_8[] as its input_domain_name's format and takes MekleAuthPath structure as its input format
-  // The biggest difference is that it uses convert_8_to_Fp function to convert unint_8[] into F_p[8] (for input domain name)
-  public static UnsignedInteger check_wildcard(UnsignedInteger[] input_domain_name_wildcard, FieldElement root, UnsignedInteger[] left_domain_name, UnsignedInteger[] right_domain_name, MerkleAuthPath authPath_left, MerkleAuthPath authPath_right, UnsignedInteger left_index, UnsignedInteger right_index) {
 
+  // wildcard non_membership proof function
+  // It takes uint_8[255] as its input_domain_name's format and takes Merkle Path and directionSelector directly as its input format
+  public static UnsignedInteger check_wildcard_python_path(UnsignedInteger[] input_domain_name_wildcard, FieldElement root, UnsignedInteger[] left_domain_name, UnsignedInteger[] right_domain_name, UnsignedInteger left_index, UnsignedInteger right_index, FieldElement[] left_path_array, FieldElement[] right_path_array, UnsignedInteger left_dir, UnsignedInteger right_dir) {
+
+    // construct MerkAuthPath structure (compute root for left_path and right_path later) 
+    MerkleAuthPath authPath_left = new MerkleAuthPath(left_dir.copy(64), left_path_array);
+    MerkleAuthPath authPath_right = new MerkleAuthPath(right_dir.copy(64), right_path_array);
 
     // convert the left and right domain name toF_p[8] to be accepted by Poseidon Hash 
     FieldElement leaf = new FieldElement(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), new BigInteger("0"));
-    FieldElement[] left_domain_name_input = convert_8_to_Fp(left_domain_name);
-    FieldElement[] right_domain_name_input = convert_8_to_Fp(right_domain_name);
+    FieldElement[] left_domain_name_input = convert_8_to_Fp_python(left_domain_name);
+    FieldElement[] right_domain_name_input = convert_8_to_Fp_python(right_domain_name);
 
     // compute the hash of left and right domain name in the first layer 
     // The needs an 8-input Poseidon Hash since domain name has a larger size 
@@ -66,7 +69,7 @@ public class non_membership {
 
     // compute the Merkle Root using left_left and right_left verifiably 
     FieldElement left_root = authPath_left.computeMerkleRoot(left_leaf.copy()).copy();
-    FieldElement right_root = authPath_left.computeMerkleRoot(right_leaf.copy()).copy();
+    FieldElement right_root = authPath_right.computeMerkleRoot(right_leaf.copy()).copy();
 
     // compare that roots are the same (public input root, roots computed from left and right) 
     // It can prove that both left_leaf and right_leaf exist in Merkle Tree 
@@ -83,185 +86,17 @@ public class non_membership {
     // check out the notes for the algorithm 
     for (int i = 0; i < 255; i++) {
       {
-        Bit bit_a0db0k = UnsignedInteger.instantiateFrom(8, i).isLessThan(left_index).copy();
-        boolean c_a0db0k = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0db0k);
-        if (c_a0db0k) {
-          if (bit_a0db0k.getConstantValue()) {
+        Bit bit_a0gb0k = UnsignedInteger.instantiateFrom(8, i).isLessThan(left_index).copy();
+        boolean c_a0gb0k = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0gb0k);
+        if (c_a0gb0k) {
+          if (bit_a0gb0k.getConstantValue()) {
             left_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
           } else {
             {
-              Bit bit_a0a0a0a2a0a92a01 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
-              boolean c_a0a0a0a2a0a92a01 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a92a01);
-              if (c_a0a0a0a2a0a92a01) {
-                if (bit_a0a0a0a2a0a92a01.getConstantValue()) {
-                  CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-                } else {
-
-                }
-              } else {
-                ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a0a92a01);
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-
-                ConditionalScopeTracker.pop();
-
-                ConditionalScopeTracker.push(new Bit(true));
-
-                ConditionalScopeTracker.pop();
-                ConditionalScopeTracker.popMain();
-              }
-
-            }
-
-          }
-        } else {
-          ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0db0k);
-          left_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-
-          ConditionalScopeTracker.pop();
-
-          ConditionalScopeTracker.push(new Bit(true));
-
-          {
-            Bit bit_a0a0a92a01_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
-            boolean c_a0a0a92a01_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a92a01_0);
-            if (c_a0a0a92a01_0) {
-              if (bit_a0a0a92a01_0.getConstantValue()) {
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-              } else {
-
-              }
-            } else {
-              ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a0a92a01_0);
-              CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-
-              ConditionalScopeTracker.pop();
-
-              ConditionalScopeTracker.push(new Bit(true));
-
-              ConditionalScopeTracker.pop();
-              ConditionalScopeTracker.popMain();
-            }
-
-          }
-          ConditionalScopeTracker.pop();
-          ConditionalScopeTracker.popMain();
-        }
-
-      }
-
-      {
-        Bit bit_c0db0k = UnsignedInteger.instantiateFrom(8, i).isLessThan(right_index).copy();
-        boolean c_c0db0k = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_c0db0k);
-        if (c_c0db0k) {
-          if (bit_c0db0k.getConstantValue()) {
-            right_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-          } else {
-            {
-              Bit bit_a0a0a0a2a2a92a01 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
-              boolean c_a0a0a0a2a2a92a01 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a2a92a01);
-              if (c_a0a0a0a2a2a92a01) {
-                if (bit_a0a0a0a2a2a92a01.getConstantValue()) {
-                  CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-                } else {
-
-                }
-              } else {
-                ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a2a92a01);
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-
-                ConditionalScopeTracker.pop();
-
-                ConditionalScopeTracker.push(new Bit(true));
-
-                ConditionalScopeTracker.pop();
-                ConditionalScopeTracker.popMain();
-              }
-
-            }
-
-          }
-        } else {
-          ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_c0db0k);
-          right_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-
-          ConditionalScopeTracker.pop();
-
-          ConditionalScopeTracker.push(new Bit(true));
-
-          {
-            Bit bit_a0a2a92a01_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
-            boolean c_a0a2a92a01_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a2a92a01_0);
-            if (c_a0a2a92a01_0) {
-              if (bit_a0a2a92a01_0.getConstantValue()) {
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-              } else {
-
-              }
-            } else {
-              ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a2a92a01_0);
-              CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-
-              ConditionalScopeTracker.pop();
-
-              ConditionalScopeTracker.push(new Bit(true));
-
-              ConditionalScopeTracker.pop();
-              ConditionalScopeTracker.popMain();
-            }
-
-          }
-          ConditionalScopeTracker.pop();
-          ConditionalScopeTracker.popMain();
-        }
-
-      }
-    }
-
-    return UnsignedInteger.instantiateFrom(1, 1);
-
-  }
-
-  // wildcard non_membership proof function
-  // It takes uint_8[] as its input_domain_name's format
-  // The biggest difference is that it uses convert_8_to_Fp_python function to convert unint_8[] into F_p[8] (for input domain name)
-  // More detailed comments see check_wildcard function
-  public static UnsignedInteger check_wildcard_python(UnsignedInteger[] input_domain_name_wildcard, FieldElement root, UnsignedInteger[] left_domain_name, UnsignedInteger[] right_domain_name, MerkleAuthPath authPath_left, MerkleAuthPath authPath_right, UnsignedInteger left_index, UnsignedInteger right_index) {
-
-    FieldElement leaf = new FieldElement(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), new BigInteger("0"));
-    FieldElement[] left_domain_name_input = convert_8_to_Fp_python(left_domain_name);
-    FieldElement[] right_domain_name_input = convert_8_to_Fp_python(right_domain_name);
-
-    FieldElement left_leaf = PoseidonHash.poseidon_hash_8(left_domain_name_input).copy();
-    FieldElement right_leaf = PoseidonHash.poseidon_hash_8(right_domain_name_input).copy();
-
-    FieldElement left_root = authPath_left.computeMerkleRoot(left_leaf.copy()).copy();
-    FieldElement right_root = authPath_right.computeMerkleRoot(right_leaf.copy()).copy();
-
-    left_root.forceEqual(root);
-    right_root.forceEqual(root);
-
-    UnsignedInteger one = new UnsignedInteger(8, new BigInteger("1"));
-    authPath_left.directionSelector.add(one).forceEqual(authPath_right.directionSelector);
-
-    for (int i = 0; i < 255; i++) {
-      {
-        Bit bit_a0r0q = UnsignedInteger.instantiateFrom(8, i).isLessThan(left_index).copy();
-        boolean c_a0r0q = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0r0q);
-        if (c_a0r0q) {
-          if (bit_a0r0q.getConstantValue()) {
-            left_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-          } else {
-            {
-              Bit bit_a0a0a0a2a0a71a61 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
-              boolean c_a0a0a0a2a0a71a61 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a71a61);
-              if (c_a0a0a0a2a0a71a61) {
-                if (bit_a0a0a0a2a0a71a61.getConstantValue()) {
+              Bit bit_a0a0a0a2a0a23a01 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
+              boolean c_a0a0a0a2a0a23a01 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a23a01);
+              if (c_a0a0a0a2a0a23a01) {
+                if (bit_a0a0a0a2a0a23a01.getConstantValue()) {
                   CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
                   CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
                 } else {
@@ -269,7 +104,7 @@ public class non_membership {
                 }
               } else {
                 ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a0a71a61);
+                ConditionalScopeTracker.push(bit_a0a0a0a2a0a23a01);
                 CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
                 CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
 
@@ -286,7 +121,7 @@ public class non_membership {
           }
         } else {
           ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0r0q);
+          ConditionalScopeTracker.push(bit_a0gb0k);
           left_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
 
           ConditionalScopeTracker.pop();
@@ -294,10 +129,10 @@ public class non_membership {
           ConditionalScopeTracker.push(new Bit(true));
 
           {
-            Bit bit_a0a0a71a61_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
-            boolean c_a0a0a71a61_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a71a61_0);
-            if (c_a0a0a71a61_0) {
-              if (bit_a0a0a71a61_0.getConstantValue()) {
+            Bit bit_a0a0a23a01_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
+            boolean c_a0a0a23a01_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a23a01_0);
+            if (c_a0a0a23a01_0) {
+              if (bit_a0a0a23a01_0.getConstantValue()) {
                 CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
                 CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
               } else {
@@ -305,7 +140,7 @@ public class non_membership {
               }
             } else {
               ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a0a71a61_0);
+              ConditionalScopeTracker.push(bit_a0a0a23a01_0);
               CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
               CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
 
@@ -325,24 +160,24 @@ public class non_membership {
       }
 
       {
-        Bit bit_c0r0q = UnsignedInteger.instantiateFrom(8, i).isLessThan(right_index).copy();
-        boolean c_c0r0q = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_c0r0q);
-        if (c_c0r0q) {
-          if (bit_c0r0q.getConstantValue()) {
+        Bit bit_c0gb0k = UnsignedInteger.instantiateFrom(8, i).isLessThan(right_index).copy();
+        boolean c_c0gb0k = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_c0gb0k);
+        if (c_c0gb0k) {
+          if (bit_c0gb0k.getConstantValue()) {
             right_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
           } else {
             {
-              Bit bit_a0a0a0a2a2a71a61 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
-              boolean c_a0a0a0a2a2a71a61 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a2a71a61);
-              if (c_a0a0a0a2a2a71a61) {
-                if (bit_a0a0a0a2a2a71a61.getConstantValue()) {
+              Bit bit_a0a0a0a2a2a23a01 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
+              boolean c_a0a0a0a2a2a23a01 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a2a23a01);
+              if (c_a0a0a0a2a2a23a01) {
+                if (bit_a0a0a0a2a2a23a01.getConstantValue()) {
                   CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
                 } else {
 
                 }
               } else {
                 ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a2a71a61);
+                ConditionalScopeTracker.push(bit_a0a0a0a2a2a23a01);
                 CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
 
                 ConditionalScopeTracker.pop();
@@ -358,7 +193,7 @@ public class non_membership {
           }
         } else {
           ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_c0r0q);
+          ConditionalScopeTracker.push(bit_c0gb0k);
           right_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
 
           ConditionalScopeTracker.pop();
@@ -366,191 +201,17 @@ public class non_membership {
           ConditionalScopeTracker.push(new Bit(true));
 
           {
-            Bit bit_a0a2a71a61_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
-            boolean c_a0a2a71a61_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a2a71a61_0);
-            if (c_a0a2a71a61_0) {
-              if (bit_a0a2a71a61_0.getConstantValue()) {
+            Bit bit_a0a2a23a01_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
+            boolean c_a0a2a23a01_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a2a23a01_0);
+            if (c_a0a2a23a01_0) {
+              if (bit_a0a2a23a01_0.getConstantValue()) {
                 CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
               } else {
 
               }
             } else {
               ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a2a71a61_0);
-              CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-
-              ConditionalScopeTracker.pop();
-
-              ConditionalScopeTracker.push(new Bit(true));
-
-              ConditionalScopeTracker.pop();
-              ConditionalScopeTracker.popMain();
-            }
-
-          }
-          ConditionalScopeTracker.pop();
-          ConditionalScopeTracker.popMain();
-        }
-
-      }
-    }
-
-    return UnsignedInteger.instantiateFrom(1, 1);
-
-  }
-
-  // wildcard non_membership proof function
-  // It takes uint_8[] as its input_domain_name's format and takes Merkle Path and directionSelector directly as its input format
-  // More detailed comments see check_wildcard function
-  public static UnsignedInteger check_wildcard_python_path(UnsignedInteger[] input_domain_name_wildcard, FieldElement root, UnsignedInteger[] left_domain_name, UnsignedInteger[] right_domain_name, UnsignedInteger left_index, UnsignedInteger right_index, FieldElement[] left_path_array, FieldElement[] right_path_array, UnsignedInteger left_dir, UnsignedInteger right_dir) {
-
-    MerkleAuthPath authPath_left = new MerkleAuthPath(left_dir.copy(64), left_path_array);
-    MerkleAuthPath authPath_right = new MerkleAuthPath(right_dir.copy(64), right_path_array);
-
-    FieldElement leaf = new FieldElement(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), new BigInteger("0"));
-    FieldElement[] left_domain_name_input = convert_8_to_Fp_python(left_domain_name);
-    FieldElement[] right_domain_name_input = convert_8_to_Fp_python(right_domain_name);
-
-    FieldElement left_leaf = PoseidonHash.poseidon_hash_8(left_domain_name_input).copy();
-    FieldElement right_leaf = PoseidonHash.poseidon_hash_8(right_domain_name_input).copy();
-
-    FieldElement left_root = authPath_left.computeMerkleRoot(left_leaf.copy()).copy();
-    FieldElement right_root = authPath_right.computeMerkleRoot(right_leaf.copy()).copy();
-
-    left_root.forceEqual(root);
-    right_root.forceEqual(root);
-
-    UnsignedInteger one = new UnsignedInteger(8, new BigInteger("1"));
-    authPath_left.directionSelector.add(one).forceEqual(authPath_right.directionSelector);
-
-    for (int i = 0; i < 255; i++) {
-      {
-        Bit bit_a0u0v = UnsignedInteger.instantiateFrom(8, i).isLessThan(left_index).copy();
-        boolean c_a0u0v = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0u0v);
-        if (c_a0u0v) {
-          if (bit_a0u0v.getConstantValue()) {
-            left_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-          } else {
-            {
-              Bit bit_a0a0a0a2a0a02a12 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
-              boolean c_a0a0a0a2a0a02a12 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a0a02a12);
-              if (c_a0a0a0a2a0a02a12) {
-                if (bit_a0a0a0a2a0a02a12.getConstantValue()) {
-                  CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-                  CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
-                } else {
-
-                }
-              } else {
-                ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a0a02a12);
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
-
-                ConditionalScopeTracker.pop();
-
-                ConditionalScopeTracker.push(new Bit(true));
-
-                ConditionalScopeTracker.pop();
-                ConditionalScopeTracker.popMain();
-              }
-
-            }
-
-          }
-        } else {
-          ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_a0u0v);
-          left_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-
-          ConditionalScopeTracker.pop();
-
-          ConditionalScopeTracker.push(new Bit(true));
-
-          {
-            Bit bit_a0a0a02a12_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(left_index).copy();
-            boolean c_a0a0a02a12_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a02a12_0);
-            if (c_a0a0a02a12_0) {
-              if (bit_a0a0a02a12_0.getConstantValue()) {
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
-              } else {
-
-              }
-            } else {
-              ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a0a02a12_0);
-              CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isLessThan(input_domain_name_wildcard[i]).getWire());
-              CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(left_domain_name[i].isNotEqualTo(UnsignedInteger.instantiateFrom(8, 0)).getWire());
-
-              ConditionalScopeTracker.pop();
-
-              ConditionalScopeTracker.push(new Bit(true));
-
-              ConditionalScopeTracker.pop();
-              ConditionalScopeTracker.popMain();
-            }
-
-          }
-          ConditionalScopeTracker.pop();
-          ConditionalScopeTracker.popMain();
-        }
-
-      }
-
-      {
-        Bit bit_c0u0v = UnsignedInteger.instantiateFrom(8, i).isLessThan(right_index).copy();
-        boolean c_c0u0v = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_c0u0v);
-        if (c_c0u0v) {
-          if (bit_c0u0v.getConstantValue()) {
-            right_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-          } else {
-            {
-              Bit bit_a0a0a0a2a2a02a12 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
-              boolean c_a0a0a0a2a2a02a12 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a0a0a2a2a02a12);
-              if (c_a0a0a0a2a2a02a12) {
-                if (bit_a0a0a0a2a2a02a12.getConstantValue()) {
-                  CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-                } else {
-
-                }
-              } else {
-                ConditionalScopeTracker.pushMain();
-                ConditionalScopeTracker.push(bit_a0a0a0a2a2a02a12);
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-
-                ConditionalScopeTracker.pop();
-
-                ConditionalScopeTracker.push(new Bit(true));
-
-                ConditionalScopeTracker.pop();
-                ConditionalScopeTracker.popMain();
-              }
-
-            }
-
-          }
-        } else {
-          ConditionalScopeTracker.pushMain();
-          ConditionalScopeTracker.push(bit_c0u0v);
-          right_domain_name[i].forceEqual(input_domain_name_wildcard[i]);
-
-          ConditionalScopeTracker.pop();
-
-          ConditionalScopeTracker.push(new Bit(true));
-
-          {
-            Bit bit_a0a2a02a12_0 = UnsignedInteger.instantiateFrom(8, i).isEqualTo(right_index).copy();
-            boolean c_a0a2a02a12_0 = CircuitGenerator.__getActiveCircuitGenerator().__checkConstantState(bit_a0a2a02a12_0);
-            if (c_a0a2a02a12_0) {
-              if (bit_a0a2a02a12_0.getConstantValue()) {
-                CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
-              } else {
-
-              }
-            } else {
-              ConditionalScopeTracker.pushMain();
-              ConditionalScopeTracker.push(bit_a0a2a02a12_0);
+              ConditionalScopeTracker.push(bit_a0a2a23a01_0);
               CircuitGenerator.__getActiveCircuitGenerator().__addOneAssertion(right_domain_name[i].isGreaterThan(input_domain_name_wildcard[i]).getWire());
 
               ConditionalScopeTracker.pop();
@@ -572,57 +233,7 @@ public class non_membership {
     return UnsignedInteger.instantiateFrom(1, 1);
   }
 
-  // convert uint_8[] to F_p -- Method 1
-  public static FieldElement[] convert_8_to_Fp(UnsignedInteger[] byte_array) {
-
-    // decompose uint_8 into bit array 
-    FieldElement[] Fp_array = (FieldElement[]) FieldElement.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{8}, new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"));
-    Bit[][] bit_array = (Bit[][]) Bit.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{255, 8});
-    for (int i = 0; i < 255; i++) {
-      bit_array[i] = byte_array[i].getBitElements();
-    }
-
-    Bit[] bit_buffer = (Bit[]) Bit.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{2040});
-    Bit tempt = Bit.instantiateFrom(false);
-
-    // This needs convert since bits type in xjsnark is reversed 
-    for (int i = 0; i < 255; i++) {
-      for (int j = 0; j < 8; j++) {
-        bit_buffer[i * 8 + j].assign(bit_array[i][j]);
-        tempt.assign(bit_array[i][j]);
-        bit_array[i][j].assign(bit_array[i][7 - j]);
-        bit_array[i][7 - j].assign(tempt);
-      }
-    }
-
-    UnsignedInteger Fp_buffer = UnsignedInteger.instantiateFrom(254, 0).copy(254);
-    UnsignedInteger bit_tempt = new UnsignedInteger(254, new BigInteger("0"));
-    UnsignedInteger Fp_tempt = new UnsignedInteger(254, new BigInteger("0"));
-
-    // recombine bit array into F_p array 
-    // 254 bit will convert to one F_p element 
-    // Note that it's not secure to convert 254bit directly since F_p is also 254 bit 
-    // Implementation needs to be tuned (revise it to 253bit or increase F_p) 
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 254; j++) {
-        // get the bit 
-        bit_tempt.assign(UnsignedInteger.instantiateFrom(254, bit_buffer[i * 254 + j]), 254);
-        // left shift this bit 
-        Fp_tempt.assign(bit_tempt, 254);
-        for (int k = 0; k < 253 - j; k++) {
-          Fp_tempt.assign(Fp_tempt.mul(UnsignedInteger.instantiateFrom(2, 2)), 254);
-        }
-        Fp_buffer.assign(Fp_tempt.add(Fp_buffer), 254);
-      }
-      Fp_array[i].assign(FieldElement.instantiateFrom(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), Fp_buffer));
-      Fp_buffer.assign(new UnsignedInteger(254, new BigInteger("0")), 254);
-    }
-
-
-    return Fp_array;
-  }
-
-  // convert uint_8[] to F_p[8] -- Method 2
+  // convert uint_8[] to F_p[8] -- the same as python script
   public static FieldElement[] convert_8_to_Fp_python(UnsignedInteger[] byte_array) {
 
     FieldElement[] Fp_array = (FieldElement[]) FieldElement.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{8}, new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"));
@@ -650,9 +261,9 @@ public class non_membership {
     // Implementation needs to be tuned (revise it to 253bit or increase F_p) 
     // It's enough to support 253bytes input since it's the largest size for input domain name 
     for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 254; j++) {
+      for (int j = 0; j < 253; j++) {
         // get the bit 
-        bit_tempt.assign(UnsignedInteger.instantiateFrom(254, bit_array[i * 254 + j]), 254);
+        bit_tempt.assign(UnsignedInteger.instantiateFrom(254, bit_array[i * 253 + j]), 254);
         // left shift this bit 
         Fp_tempt.assign(bit_tempt, 254);
         for (int k = 0; k < j; k++) {
