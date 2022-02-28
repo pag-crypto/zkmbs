@@ -19,7 +19,7 @@ public class ChannelBaseline extends CircuitGenerator {
 
 
   public static void main(String[] args) {
-    Config.multivariateExpressionMinimization = true;
+    Config.multivariateExpressionMinimization = false;
     Config.writeCircuits = true;
     Config.outputFilesPath = "./circuits";
     new ChannelBaseline();
