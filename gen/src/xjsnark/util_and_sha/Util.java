@@ -334,4 +334,48 @@ public class Util {
     return tail;
   }
 
+  public static UnsignedInteger[] split_32_into_8s(UnsignedInteger input) {
+    UnsignedInteger[] output = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{4}, 8);
+    for (int i = 0; i < 4; i++) {
+      output[i].assign(UnsignedInteger.instantiateFrom(8, input.shiftRight(8 * (3 - i))), 8);
+    }
+    return output;
+  }
+
+  public static UnsignedInteger rev_bytes_32(UnsignedInteger input) {
+    UnsignedInteger[] byte_array = Util.split_32_into_8s(input.copy(32));
+
+    UnsignedInteger[] rev_byte_array = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{4}, 8);
+    for (int i = 0; i < 4; i++) {
+      rev_byte_array[i].assign(byte_array[3 - i], 8);
+    }
+
+    return Util.combine_four_bytes_to_one_32(rev_byte_array[0].copy(32), rev_byte_array[1].copy(32), rev_byte_array[2].copy(32), rev_byte_array[3].copy(32));
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
