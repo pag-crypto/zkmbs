@@ -52,12 +52,16 @@ echo "Log stored in logs/$1_proof.txt"
 
 log_file=$1_proof.txt
 
+srs_size="$(grep -o "PK size in bits:.*" logs/$1_proof.txt | awk '{print $NF}')"
+srs_size_mb=$(echo "$srs_size/8000000" | bc)
+
 prover_time="$(grep -o "(leave) Call to r1cs_gg_ppzksnark_prover.*\[[0-9]*\.\?[0-9]*s" logs/$1_proof.txt | grep -o "[0-9]\+\.[0-9]\+")"
 
 verifier_time="$(grep -o "(leave) Call to r1cs_gg_ppzksnark_online_verifier_strong_IC.*\[[0-9]*\.\?[0-9]*s" logs/$1_proof.txt | tail -1 | grep -o "[0-9]\+\.[0-9]\+")"
 
 verifier_time_ms=$(echo "1000*$verifier_time" | bc)
 
+printf "SRS size: %d MB\n" $srs_size_mb
 printf "Prover time : %.2f s\n" $prover_time
 printf "Verify time : %.2f ms\n" $verifier_time_ms
 
