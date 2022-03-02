@@ -7,7 +7,7 @@ progress() { pc=0; while [ -e $file ] do echo -ne "$pc sec\033[0K\r"
     done
 }
 
-output_file="columns_srs_times.txt"
+output_file="columns_ptime_srs_vtime.txt"
 > $output_file
 
 circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
