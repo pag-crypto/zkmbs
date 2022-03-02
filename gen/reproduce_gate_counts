@@ -11,9 +11,10 @@ progress() { pc=0;
 }
 
 
-> all_sizes.txt
+output_file="columns_total.txt"
+> $output_file
 
-circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha")
+circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
 
 for i in ${!circuit_list[@]};
 do
@@ -34,7 +35,8 @@ do
 	fi
 
 	optimized=true
-	if [[ "$ckt" == "ChannelBaseline" ]]
+	# if [[ "$ckt" == "ChannelBaseline" ]]
+	if [[ $ckt == ChannelBaseline || $ckt == DNS_Amortized_doh_get ]]
 	then
 		optimized=false
 	fi
@@ -48,13 +50,20 @@ do
 	java -Xmx16g -cp bin:xjsnark_backend.jar xjsnark.$fullname > logs/${ckt}_circuit.txt
 	rm -f $file
 
-	if [[ optimized=true ]]; then
+	if [[ $optimized == true ]]
+	then
 		num_con="$(grep  "after  " logs/${ckt}_circuit.txt | awk '{print $NF}')"
 	else 
 		num_con="$(grep  "Total Number of Constraints" logs/${ckt}_circuit.txt | awk '{print $NF}')"
 	fi
-	printf "Number of constraints of circuit $ckt: %.2e\n" $num_con
-	printf "$ckt: %.2e\n" $num_con >> all_sizes.txt
+
+
+	num_con_div=$(echo "scale = 2; $num_con/10000.0" | bc)
+	printf "Number of constraints of circuit $ckt: %4.1f\n" $num_con_div
+	printf "%-25s" $ckt >> $output_file
+	printf "%8.1f\n" $num_con_div >> $output_file
+	# printf "%.2e\n" $num_con >> all_sizes.txt
+	# printf "$ckt:\t %.2e\n" $num_con >> all_sizes.txt
 	# echo "$ckt: $num_con" >> all_sizes.txt
 done
 

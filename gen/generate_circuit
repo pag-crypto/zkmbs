@@ -28,7 +28,7 @@ then
 fi
 
 optimized=true
-if [[ "$1" == "ChannelBaseline" ] || [ "$1" == "DNS_Amortized_doh_get"  ]]
+if [[ $1 == ChannelBaseline || $1 == DNS_Amortized_doh_get ]]
 then
 	optimized=false
 fi
@@ -48,9 +48,8 @@ progress &
 
 rm -f $file
 
-trial=$1
-if [[ optimized=true ]]; then
-	echo "Circuit stored in circuits/${trial}_optimized.arith" 
+if [[ $optimized == true ]]; then
+	echo "Circuit stored in circuits/$1_optimized.arith" 
 	echo "Input file stored in circuits/$1_Sample_Run1_optimized.in" 
 	num_con="$(grep  "after  " logs/$1_circuit.txt | awk '{print $NF}')"
 else 

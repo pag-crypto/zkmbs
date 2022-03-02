@@ -28,7 +28,7 @@ then
 fi
 
 optimized=true
-if [[ "$1" == "ChannelBaseline" ]]
+if [[ $1 == ChannelBaseline || $1 == DNS_Amortized_doh_get ]]
 then
 	optimized=false
 fi
@@ -46,7 +46,13 @@ progress &
 
 # /usr/bin/time -f "Time taken: %E min:sec \nMemory used: %M KB"  ../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
 
-../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
+if [[ $optimized == true ]] 
+then
+	../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
+else
+	../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1.arith circuits/$1_Sample_Run1.in > logs/$1_proof.txt
+fi
+	
 
 rm -f $file
 

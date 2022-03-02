@@ -1,0 +1,87 @@
+#!/usr/bin/bash
+
+file=$(mktemp)
+progress() { pc=0; while [ -e $file ] do echo -ne "$pc sec\033[0K\r"
+      sleep 1
+      ((pc++))
+    done
+}
+
+output_file="columns_srs_times.txt"
+> $output_file
+
+circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
+
+# circuit_list=("ChannelBaseline" "ChannelShortcut")
+
+for i in ${!circuit_list[@]};
+do
+	ckt=${circuit_list[$i]}
+
+	packagename="$ckt"
+	if [ ${ckt::1} == 'O' ] 
+	then
+		packagename="e2eODOH"
+	elif [ ${ckt::1} == 'D' ] 
+	then
+		packagename="e2eDNS"
+	elif [ ${ckt::1} == 'C' ] 
+	then
+		packagename="channel_openings"
+	elif [ ${ckt::1} == 'F' ] 
+	then
+		packagename="e2eFirewall"
+	fi
+
+	optimized=true
+	if [[ $ckt == ChannelBaseline || $ckt == DNS_Amortized_doh_get ]]
+	then
+		optimized=false
+	fi
+
+	fullname="$packagename.$ckt"
+
+	if ! [ -f "src/xjsnark/$packagename/$ckt.java" ]
+	then
+		echo "ERROR: This circuit doesn't exist"
+		exit 1
+	fi
+
+	file=$(mktemp)
+	echo "Proving circuit $ckt..." 
+	progress &
+
+
+	if [[ $optimized == true ]] 
+	then
+		echo ""
+		../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/${ckt}_optimized.arith circuits/${ckt}_Sample_Run1_optimized.in > logs/${ckt}_proof.txt
+	else		
+		echo ""
+		../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/${ckt}.arith circuits/${ckt}_Sample_Run1.in > logs/${ckt}_proof.txt
+	fi
+	
+	rm -f $file
+
+	log_file=${ckt}_proof.txt
+
+	srs_size="$(grep -o "PK size in bits:.*" logs/${ckt}_proof.txt | awk '{print $NF}')"
+	srs_size_mb=$(echo "$srs_size/8000000" | bc)
+
+	prover_time="$(grep -o "(leave) Call to r1cs_gg_ppzksnark_prover.*\[[0-9]*\.\?[0-9]*s" logs/${ckt}_proof.txt | grep -o "[0-9]\+\.[0-9]\+")"
+
+	verifier_time="$(grep -o "(leave) Call to r1cs_gg_ppzksnark_online_verifier_strong_IC.*\[[0-9]*\.\?[0-9]*s" logs/${ckt}_proof.txt | tail -1 | grep -o "[0-9]\+\.[0-9]\+")"
+
+	verifier_time_ms=$(echo "1000*$verifier_time" | bc)
+
+	printf "%-24s  " $ckt >> $output_file
+	printf "%4.1f s  " $prover_time >> $output_file
+	printf "%4d MB  " $srs_size_mb >> $output_file
+	printf "%1.1f ms\n" $verifier_time_ms >> $output_file
+
+	# echo "${ckt}:" >> all_proofs.txt
+	# printf "\tSRS size: %d MB\n" $srs_size_mb >> all_proofs.txt
+	# printf "\tProver time : %.2f s\n" $prover_time
+	# printf "\tProver time : %.2f s\n" $prover_time >> all_proofs.txt
+	# printf "\tVerify time : %.2f ms\n" $verifier_time_ms >> all_proofs.txt
+done
