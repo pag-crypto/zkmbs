@@ -231,9 +231,156 @@ public class TLSKeySchedule {
     return new UnsignedInteger[][]{dns_plaintext, tk_shs, iv_shs, tk_capp, iv_capp, H_3, SF_calculated};
   }
 
+public static UnsignedInteger[][] get1RTT_HS_only_CO(UnsignedInteger[] HS, UnsignedInteger[] H2, UnsignedInteger CH_SH_len, UnsignedInteger ServExt_len, UnsignedInteger[] ServExt_ct_tail, UnsignedInteger ServExt_tail_len, UnsignedInteger[] SHA_H_Checkpoint, UnsignedInteger[] appl_ct) {
+
+    UnsignedInteger[] SHTS = HKDF.hkdf_expand_derive_secret(HS, "s hs traffic", H2);
+
+    // traffic key and iv for "server handshake" messages 
+    UnsignedInteger[] tk_shs = HKDF.hkdf_expand_derive_tk(SHTS, 16);
+    UnsignedInteger[] iv_shs = HKDF.hkdf_expand_derive_iv(SHTS, 12);
+
+    UnsignedInteger TR3_len = CH_SH_len.add(ServExt_len).copy(16);
+    UnsignedInteger TR7_len = TR3_len.subtract(UnsignedInteger.instantiateFrom(8, 36)).copy(16);
+
+    // ServExt = ServExt_head || ServExt_tail 
+    UnsignedInteger ServExt_head_length = UnsignedInteger.instantiateFrom(16, ServExt_len.subtract(ServExt_tail_len)).copy(16);
+
+    // To decrypt the ServExt_tail, we need to calculate the GCM counter block number 
+    UnsignedInteger gcm_block_number = UnsignedInteger.instantiateFrom(8, ServExt_head_length.div(UnsignedInteger.instantiateFrom(16, 16))).copy(8);
+
+    // Additionally, the ServExt_tail might not start perfectly at the start of a block 
+    // That is, the length of ServExt_head may not be a multiple of 16 
+    UnsignedInteger offset = UnsignedInteger.instantiateFrom(8, ServExt_head_length.mod(UnsignedInteger.instantiateFrom(8, 16))).copy(8);
+
+    // This function decrypts the tail with the specific GCM block number and offset within the block 
+    UnsignedInteger[] ServExt_tail = AES_GCM.aes_gcm_decrypt_128bytes_middle(tk_shs, iv_shs, ServExt_ct_tail, gcm_block_number.copy(8), offset.copy(8));
+
+    // This function calculates the hash of TR3 and TR7 where TR7 is TR3 without the last 36 characters 
+    // starting with the SHA_H_Checkpoint provided as a checkpoint state of SHA that is common to both transcripts. 
+    // The inputs are: 
+    // - the checkpoint state 
+    // - the length of TR3 and TR7 (the latter must be a prefix of the former) 
+    // - the tail of TR3 (the suffix after the checkpoint) 
+    // - the length of the tail of TR3 
+    // - the length of the tail of TR7 
+    UnsignedInteger[][] H7_H3 = SHA2.double_sha_from_checkpoint(SHA_H_Checkpoint, TR3_len.copy(16), TR7_len.copy(16), ServExt_tail, ServExt_tail_len.copy(8), ServExt_tail_len.subtract(UnsignedInteger.instantiateFrom(8, 36)).copy(8));
+
+    UnsignedInteger[] H_7 = H7_H3[0];
+    UnsignedInteger[] H_3 = H7_H3[1];
+
+    // Derive the SF value  
+    UnsignedInteger[] fk_S = HKDF.hkdf_expand_derive_secret(SHTS, "finished", (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{0}, 8));
+    UnsignedInteger[] SF_calculated = HKDF.hmac(fk_S, H_7);
+
+    // Now, we need to calculate the actual SF value present in the transcript 
+    // We know that SF is in the tr3_tail  
+    // And that it is the last 32 bytes of tr3_tail... so there are ct3_tail_length - 32 characters before it 
+    UnsignedInteger[] SF_transcript = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{32}, 8);
+    SmartMemory<UnsignedInteger> ServExt_tail_RAM = new SmartMemory(ServExt_tail, UnsignedInteger.__getClassRef(), new Object[]{"8"});
+
+    for (int i = 0; i < 32; i++) {
+      SF_transcript[i].assign(ServExt_tail_RAM.read(UnsignedInteger.instantiateFrom(8, i).add(ServExt_tail_len).subtract(UnsignedInteger.instantiateFrom(8, 32))), 8);
+    }
+
+    // Verify that the two SF values are identical 
+    Util.combine_8_into_256(SF_calculated).forceEqual(Util.combine_8_into_256(SF_transcript));
+
+    UnsignedInteger[] dHS = HKDF.hkdf_expand_derive_secret(HS, "derived", SHA2.hash_of_empty());
+
+    UnsignedInteger[] MS = HKDF.hkdf_extract(dHS, Util.new_zero_array(32));
+
+    UnsignedInteger[] CATS = HKDF.hkdf_expand_derive_secret(MS, "c ap traffic", H_3);
+
+    // client application traffic key, iv 
+    UnsignedInteger[] tk_capp = HKDF.hkdf_expand_derive_tk(CATS, 16);
+    UnsignedInteger[] iv_capp = HKDF.hkdf_expand_derive_iv(CATS, 12);
+
+    UnsignedInteger[] dns_plaintext = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{32}, 8);
+
+    return new UnsignedInteger[][]{dns_plaintext, tk_shs, iv_shs, tk_capp, iv_capp, H_3, SF_calculated};
+  }
 
 
 
+public static UnsignedInteger[][] get1RTT_only_CO(UnsignedInteger DHE_share, FieldElement Ax, FieldElement Ay, FieldElement Bx, FieldElement By, UnsignedInteger[] H2, UnsignedInteger[] CH_SH, UnsignedInteger CH_SH_len, UnsignedInteger[] ServExt_ct, UnsignedInteger ServExt_len, UnsignedInteger[] ServExt_tail_ct, UnsignedInteger[] appl_ct) {
+
+    UnsignedInteger[] ES = HKDF.hkdf_extract(Util.new_zero_array(32), Util.new_zero_array(32));
+    UnsignedInteger[] dES = HKDF.hkdf_expand_derive_secret(ES, "derived", SHA2.hash_of_empty());
+
+    // This function's goals: 
+    // (1) Verify that G^sk = A where G is the generator of secp256 
+    // (2) Compute B^sk to obtain the DHE secret  
+    UnsignedInteger[] DHE = ECDHE.DHExchange(Ax.copy(), Ay.copy(), Bx.copy(), By.copy(), DHE_share.copy(256));
+
+    UnsignedInteger[] HS = HKDF.hkdf_extract(dES, DHE);
+
+    UnsignedInteger[] SHTS = HKDF.hkdf_expand_derive_secret(HS, "s hs traffic", H2);
+
+    // traffic key and iv for "server handshake" messages 
+    UnsignedInteger[] tk_shs = HKDF.hkdf_expand_derive_tk(SHTS, 16);
+    UnsignedInteger[] iv_shs = HKDF.hkdf_expand_derive_iv(SHTS, 12);
+
+    UnsignedInteger[] dHS = HKDF.hkdf_expand_derive_secret(HS, "derived", SHA2.hash_of_empty());
+
+    UnsignedInteger[] MS = HKDF.hkdf_extract(dHS, Util.new_zero_array(32));
+
+    // Decrypt the server extensions with the server's handshake traffic keys 
+    UnsignedInteger[] ServExt = AES_GCM.aes_gcm_decrypt(tk_shs, iv_shs, ServExt_ct);
+
+    // Now, we need to decrypt the ServExt_tail. 
+    // As we are using AES GCM, we need to find the exact block number that the tail starts at. 
+    // One AES block = 16 bytes 
+    UnsignedInteger gcm_block_number = UnsignedInteger.instantiateFrom(8, ServExt_len.div(UnsignedInteger.instantiateFrom(8, 64))).mul(UnsignedInteger.instantiateFrom(8, 4)).copy(8);
+
+    // Returns the decryption starting at the GCM counter  
+    UnsignedInteger[] Serv_Ext_tail = AES_GCM.aes_gcm_decrypt(tk_shs, iv_shs, ServExt_tail_ct, gcm_block_number.copy(8));
+
+    // This transcript is CH || SH || ServExt 
+    UnsignedInteger[] TR3 = Util.concat(CH_SH, ServExt);
+
+    // As we don't know the true length of ServExt, the variable's size is a fixed upper bound 
+    // However, we only require a hash of the true transcript, which is a prefix of the variable 
+    // of length CH_SH_len + ServExt_len 
+    UnsignedInteger[] H3 = SHA2.sha2_of_prefix(TR3, CH_SH_len.add(ServExt_len).copy(16), Serv_Ext_tail);
+
+    UnsignedInteger[] CATS = HKDF.hkdf_expand_derive_secret(MS, "c ap traffic", H3);
+
+    UnsignedInteger[] tk_capp = HKDF.hkdf_expand_derive_tk(CATS, 16);
+    UnsignedInteger[] iv_capp = HKDF.hkdf_expand_derive_iv(CATS, 12);
+
+    UnsignedInteger[] dns_plaintext = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{32}, 8);
+
+    return new UnsignedInteger[][]{dns_plaintext, tk_capp, iv_capp};
+  }
+
+
+
+  public static UnsignedInteger[][] get0RTT_only_CO(UnsignedInteger[] PSK, UnsignedInteger[] H_1, UnsignedInteger[] H_5, UnsignedInteger[] REAL_BINDER, UnsignedInteger[] dns_ciphertext) {
+
+    UnsignedInteger[] ES = HKDF.hkdf_extract(Util.new_zero_array(32), PSK);
+
+    UnsignedInteger[] dES = HKDF.hkdf_expand_derive_secret(ES, "derived", SHA2.hash_of_empty());
+
+    UnsignedInteger[] BK = HKDF.hkdf_expand_derive_secret(ES, "res binder", SHA2.hash_of_empty());
+
+    UnsignedInteger[] fk_B = HKDF.hkdf_expand_derive_secret(BK, "finished", (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{0}, 8));
+
+    // This is the binder derived by the purported PSK that was given as a witness to the circuit 
+    UnsignedInteger[] derived_binder = HKDF.hmac(fk_B, H_5);
+
+    // Verify that the derived binder is the same as the one from the transcript 
+    Util.combine_8_into_256(REAL_BINDER).forceEqual(Util.combine_8_into_256(derived_binder));
+
+    UnsignedInteger[] ETS = HKDF.hkdf_expand_derive_secret(ES, "c e traffic", H_1);
+
+    UnsignedInteger[] tk_early = HKDF.hkdf_expand_derive_tk(ETS, 16);
+    UnsignedInteger[] iv_early = HKDF.hkdf_expand_derive_iv(ETS, 12);
+
+    // decrypt the plaintext 
+    UnsignedInteger[] dns_plaintext = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{32}, 8);
+
+    return new UnsignedInteger[][]{dns_plaintext, tk_early, iv_early};
+  }
 
 
 

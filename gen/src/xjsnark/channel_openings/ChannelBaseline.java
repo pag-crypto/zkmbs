@@ -260,7 +260,7 @@ public class ChannelBaseline extends CircuitGenerator {
     //   (1) Verify that the client's DHE key share is correct 
     //   (2) Decrypt the ServerExtensions and compute hash of transcript TR3 = CH || SH || ServExt 
     //   (3) Derive the client appl traffic keys and decrypt application data  
-    values = TLSKeySchedule.get1RTT(sk.copy(256), Ax.copy(), Ay.copy(), Bx.copy(), By.copy(), H2, CH_SH, CH_SH_len.copy(16), ServExt_ct, ServExt_ct_len.copy(16), ServExt_ct_tail, appl_ct);
+    values = TLSKeySchedule.get1RTT_only_CO(sk.copy(256), Ax.copy(), Ay.copy(), Bx.copy(), By.copy(), H2, CH_SH, CH_SH_len.copy(16), ServExt_ct, ServExt_ct_len.copy(16), ServExt_ct_tail, appl_ct);
 
 
 

@@ -232,7 +232,7 @@ public class ChannelShortcut extends CircuitGenerator {
 
     UnsignedInteger[] SHA_H_Checkpoint_32 = xjsnark.util_and_sha.Util.convert_8_to_32(SHA_H_Checkpoint);
 
-    values = TLSKeySchedule.get1RTT_HS_new(HS, H2, CH_SH_len.copy(16), ServExt_len.copy(16), ServExt_tail_ct, ServExt_tail_len.copy(8), SHA_H_Checkpoint_32, appl_ct);
+    values = TLSKeySchedule.get1RTT_HS_only_CO(HS, H2, CH_SH_len.copy(16), ServExt_len.copy(16), ServExt_tail_ct, ServExt_tail_len.copy(8), SHA_H_Checkpoint_32, appl_ct);
 
   }
   public String get_tail_minus_36(String line) {

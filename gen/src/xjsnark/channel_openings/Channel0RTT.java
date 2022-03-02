@@ -185,7 +185,7 @@ public class Channel0RTT extends CircuitGenerator {
     // (2) Derive the client application traffic key 
     // (3) Decrypt the early data ciphertext 
 
-    UnsignedInteger[] value = TLSKeySchedule.get0RTT(PSK, H1, H5, transcript_binder, early_data_ct)[0];
+    UnsignedInteger[] value = TLSKeySchedule.get0RTT_only_CO(PSK, H1, H5, transcript_binder, early_data_ct)[0];
 
     early_data_pt = value;
   }
