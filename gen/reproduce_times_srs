@@ -1,7 +1,10 @@
 #!/usr/bin/bash
 
 file=$(mktemp)
-progress() { pc=0; while [ -e $file ] do echo -ne "$pc sec\033[0K\r"
+progress() { pc=0;
+  while [ -e $file ]
+    do
+      echo -ne "$pc sec\033[0K\r"
       sleep 1
       ((pc++))
     done

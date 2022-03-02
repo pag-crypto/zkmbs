@@ -3,5 +3,5 @@
 javac -d bin -cp xjsnark_backend.jar $(find ./* | grep ".java$")
 
 mkdir -p circuits
-mkdir -p log
+mkdir -p logs
 
