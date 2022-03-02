@@ -1,7 +1,10 @@
 #!/usr/bin/bash
 
 file=$(mktemp)
-progress() { pc=0; while [ -e $file ] do echo -ne "$pc sec\033[0K\r"
+progress() { pc=0;
+  while [ -e $file ]
+    do
+      echo -ne "$pc sec\033[0K\r"
       sleep 1
       ((pc++))
     done
@@ -12,7 +15,9 @@ output_file="columns_ptime_srs_vtime.txt"
 
 circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
 
-# circuit_list=("ChannelBaseline" "ChannelShortcut")
+if  [[ $1 = "-nobaseline" ]]; then
+	circuit_list=("ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
+fi
 
 for i in ${!circuit_list[@]};
 do
