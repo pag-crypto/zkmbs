@@ -1,7 +1,13 @@
 #!/bin/bash 
 
-javac -d bin -cp xjsnark_backend.jar $(find ./* | grep ".java$")
-
 mkdir -p circuits
 mkdir -p log
+
+# javac -d bin -cp xjsnark_backend.jar $(find ./* | grep ".java$")
+
+if javac -d bin -cp xjsnark_backend.jar $(find ./* | grep ".java$"); then
+	echo "compilation SUCCESS"
+else
+	echo "compilation ERROR"
+fi
 
