@@ -14,7 +14,13 @@ progress() { pc=0;
 output_file="column_total.txt"
 > $output_file
 
+
 circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
+
+if  [[ $1 = "-nobaseline" ]]; then
+	circuit_list=("ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha" "Firewall_HS" "DNS_Amortized_ChaCha" "DNS_Amortized_doh_get" "ODOH_Amortized")
+fi
+
 
 for i in ${!circuit_list[@]};
 do
