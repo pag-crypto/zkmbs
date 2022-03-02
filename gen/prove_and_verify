@@ -44,11 +44,14 @@ echo "Creating SRS, running prove, and verify..."
 echo "This may take several minutes..."
 progress &
 
-/usr/bin/time -f "Time taken: %E min:sec \nMemory used: %M KB"  ../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
+# /usr/bin/time -f "Time taken: %E min:sec \nMemory used: %M KB"  ../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
+
+../jsnark/libsnark/build/libsnark/jsnark_interface/run_ppzksnark gg circuits/$1_optimized.arith circuits/$1_Sample_Run1_optimized.in > logs/$1_proof.txt
 
 rm -f $file
 
 echo "Log stored in logs/$1_proof.txt"
+echo ""
 
 log_file=$1_proof.txt
 

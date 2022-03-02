@@ -1,0 +1,61 @@
+#!/usr/bin/bash
+
+file=$(mktemp)
+progress() { pc=0;
+  while [ -e $file ]
+    do
+      echo -ne "$pc sec\033[0K\r"
+      sleep 1
+      ((pc++))
+    done
+}
+
+
+> all_sizes.txt
+
+circuit_list=("ChannelBaseline" "ChannelShortcut" "Channel0RTT" "ChannelAmortized" "ChannelAmortized_ChaCha")
+
+for i in ${!circuit_list[@]};
+do
+	ckt=${circuit_list[$i]}
+	packagename=""
+	if [ ${ckt::1} == 'O' ] 
+	then
+		packagename="e2eODOH"
+	elif [ ${ckt::1} == 'D' ] 
+	then
+		packagename="e2eDNS"
+	elif [ ${ckt::1} == 'C' ] 
+	then
+		packagename="channel_openings"
+	elif [ ${ckt::1} == 'F' ] 
+	then
+		packagename="e2eFirewall"
+	fi
+
+	optimized=true
+	if [[ "$ckt" == "ChannelBaseline" ]]
+	then
+		optimized=false
+	fi
+
+	fullname="$packagename.$ckt"
+	
+	file=$(mktemp)
+	echo "Generating circuit $ckt..." 
+	progress &
+
+	java -Xmx16g -cp bin:xjsnark_backend.jar xjsnark.$fullname > logs/${ckt}_circuit.txt
+	rm -f $file
+
+	if [[ optimized=true ]]; then
+		num_con="$(grep  "after  " logs/${ckt}_circuit.txt | awk '{print $NF}')"
+	else 
+		num_con="$(grep  "Total Number of Constraints" logs/${ckt}_circuit.txt | awk '{print $NF}')"
+	fi
+	printf "Number of constraints of circuit $ckt: %.2e\n" $num_con
+	printf "$ckt: %.2e\n" $num_con >> all_sizes.txt
+	# echo "$ckt: $num_con" >> all_sizes.txt
+done
+
+
