@@ -6,6 +6,72 @@ This repository accompanies the paper "[Zero-Knowledge Middleboxes](https://epri
 This repository contains code for the three ZKMB case studies described in the paper, as well as all the channel opening circuits. 
 The xJsnark library is used to generated circuits, including modules to perform AES-CTR, SHA256, Merkle tree membership testing, ECDHE and the TLS 1.3 key schedule. It also contains support code (such as Python scripts) for generating test inputs.
 
+# Installation 
+
+1. Clone this repository and enter it: `git clone https://github.com/pag-crypto/zkmbs.git` and `cd zkmbs/`.
+
+
+2. (Install jsnark:) Run `./install_deps_jsnark` (for Ubuntu) to install jsnark and other dependencies. For other systems, follow the “jsnark installation instructions” here: [https://github.com/akosba/jsnark#prerequisites](https://github.com/akosba/jsnark#prerequisites).
+
+
+3. (Compile xJsnark:) Enter the `gen/` directory and run `./compile_circuits`. The exact output may vary but it should not produce an explicit error. Ours looked something like this: 
+
+```
+Note: Some input files use ...
+Note: Recompile with -Xlint:unchecked ...
+compilation SUCCESS
+```
+
+
+
+
+# Reproducing Results
+
+We recommend using a system with at least 32 GB of RAM and 8 cores. Our largest circuit (ChannelBaseline) uses a lot of heap space and had lead to errors on systems with just 16 GB memory.
+
+We provide two experiment scripts to reproduce the results of Figure 6, 7 from the ZKMBs paper.
+
+### Experiment 1: Gate Counts 
+
+Inside `gen/`, run `./reproduce_total_counts` to obtain gate counts (in counts of 10^4). The script outputs to a file named `column_total.txt`. A sample output is as follows:
+
+```
+ChannelBaseline             747.9    # BCO
+ChannelShortcut             111.1    # SCO
+Channel0RTT                  60.7    # ECO
+ChannelAmortized             19.1    # ACO^AES
+ChannelAmortized_ChaCha       8.7    # ACO^Cha
+Firewall_HS                 150.1    # Firewall
+DNS_Amortized_ChaCha         17.6    # DoT
+DNS_Amortized_doh_get        48.1    # DoH GET
+ODOH_Amortized               48.1    # ODoH
+```
+
+This is a reproduction of the "Total" columns of Figure 6, 7 from the paper with the nine circuit output in the same order as the rows of the two figures. 
+
+### Experiment 1: Proving Times, SRS
+
+Inside `gen/`, run `./reproduce_times_srs` to obtain prover times, SRS sizes, and verification times. The script outputs to a file named ` columns_ptime_srs_vtime.txt`. A sample output is as follows:
+
+```
+ChannelBaseline           92.7 s  1179 MB   2.6 ms
+ChannelShortcut           15.6 s   148 MB   1.6 ms
+Channel0RTT                8.4 s    79 MB   1.6 ms
+ChannelAmortized           2.9 s    26 MB   1.7 ms
+ChannelAmortized_ChaCha    1.4 s    13 MB   1.6 ms
+Firewall_HS               21.2 s   206 MB   1.6 ms
+DNS_Amortized_ChaCha       3.1 s    29 MB   2.1 ms
+DNS_Amortized_doh_get      6.8 s    72 MB   2.6 ms
+ODOH_Amortized             7.9 s    76 MB   2.6 ms
+```
+
+Proof generation is a randomized algorithm; the results reported in the paper are the median of five runs. We have observed variations of up to 2 s for proving time and 2 ms for verifier time, in either direction. The script above performs just one run per circuit.
+
+### Individual Circuits 
+
+The scripts `./generate_circuit DNS_Amortized_ChaCha` and `./prove_and_verify DNS_Amortized_ChaCha` allow for the generating an individual circuit and creating proofs on it, respectively. Replace "`DNS_Amortized_ChaCha`" with any of the nine circuits above.
+
+
 # Reading the Code
 
 The code is written with the [xJsnark](https://github.com/akosba/xjsnark) library, which has its own Java-based DSL readable by the MPS IDE and stored as XML files. To make it easier to read the code without having to download the IDE, we extracted the readble code and stored it in the folder `readable_code`. They are only marked as ".java" files for syntax highlighting, but are actually written in the xJsnark DSL. 
