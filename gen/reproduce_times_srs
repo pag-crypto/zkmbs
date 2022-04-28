@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 file=$(mktemp)
 progress() { pc=0;
