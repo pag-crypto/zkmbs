@@ -4,8 +4,8 @@ package xjsnark.e2eDNS;
 
 import backend.structure.CircuitGenerator;
 import backend.config.Config;
-import backend.eval.SampleRun;
 import java.math.BigInteger;
+import backend.eval.SampleRun;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import backend.auxTypes.FieldElement;
@@ -22,10 +22,14 @@ public class DNS_Amortized_doh_get extends CircuitGenerator {
 
   public static void main(String[] args) {
     Config.arithOptimizerNumThreads = 8;
+    Config.arithOptimizerIncrementalMode = false;
     Config.multivariateExpressionMinimization = false;
 
     Config.writeCircuits = true;
-    Config.outputFilesPath = "./circuits";
+    Config.outputFilesPath = ".";
+
+    BigInteger curve25519dalek = ((new BigInteger("2")).pow(252)).add((new BigInteger("27742317777372353535851937790883648493")));
+
 
     new DNS_Amortized_doh_get();
   }
@@ -37,18 +41,21 @@ public class DNS_Amortized_doh_get extends CircuitGenerator {
       public void pre() {
         try {
 
-          // Example commitment string 
-          String comm_str = "2db24a9a876fc5395a0a087137c4d73de25a4f2002f384513d8427959247c4cd";
+          BufferedReader br = new BufferedReader(new FileReader("amortized_doh_inputs.txt"));
 
-          // Key, iv that were committed to 
-          String key_str = "f37272c716edc44f696e728d855f7fde";
-          String iv_str = "d4d5c1d93a7ba8a4f74a3164";
 
-          // query is amazon.com 
-          String dns_ct_str = "b3a08e92141f43e93474823357632f3aeeef80f4ba3951e587775050a45ce3300fb0f62430b93e790ac7d576dafffebd1c52de99f6a375709ad7e1adbd16955d259a3318a33ac6ea6209be5dd6062379c21090fafa5f3c16397dd4f71ffa56f6aa9f58564ce66bb0cd6e99790d08e51802495bb8da5075607e5ed85c6ba5ca71412d2733a6f124310193dc00ce88e05cb06d1cb113dc408774df42acf7aa7358af30510b020dda9ec";
+          String comm_str = br.readLine();
+          String dns_ct_str = br.readLine();
+
+          String key_str = br.readLine();
+          String iv_str = br.readLine();
+
+          String SN_str = br.readLine();
+
+
+
 
           // Convert the strings to circuit input types 
-
           comm.mapValue(new BigInteger(comm_str, 16), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
 
           for (int i = 0; i < key_str.length() / 2; i = i + 1) {
@@ -59,12 +66,14 @@ public class DNS_Amortized_doh_get extends CircuitGenerator {
             iv[i].mapValue(new BigInteger(iv_str.substring(2 * i, 2 * i + 2), 16), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
           }
 
-          SN.mapValue(BigInteger.ZERO, CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
+         SN.mapValue(new BigInteger(SN_str, 10), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
+
+	  // SN.mapValue(BigInteger.ZERO, CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
 
           for (int i = 0; i < dns_ct_str.length() / 2; i = i + 1) {
             dns_ct[i].mapValue(new BigInteger(dns_ct_str.substring(2 * i, 2 * i + 2), 16), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
           }
-          for (int i = dns_ct_str.length() / 2; i < 500; i = i + 1) {
+          for (int i = dns_ct_str.length() / 2; i < MAX_DNS_CT_LEN; i = i + 1) {
             dns_ct[i].mapValue(new BigInteger("0", 16), CircuitGenerator.__getActiveCircuitGenerator().__getCircuitEvaluator());
           }
 
@@ -143,7 +152,7 @@ public class DNS_Amortized_doh_get extends CircuitGenerator {
     HEIGHT = 21;
     comm = new FieldElement(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), new BigInteger("0"));
     SN = new UnsignedInteger(64, new BigInteger("0"));
-    dns_ct = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{500}, 8);
+    dns_ct = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{MAX_DNS_CT_LEN}, 8);
     key = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{16}, 8);
     iv = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{12}, 8);
     dns_query = (UnsignedInteger[]) UnsignedInteger.createZeroArray(CircuitGenerator.__getActiveCircuitGenerator(), new int[]{32}, 8);
@@ -178,6 +187,7 @@ public class DNS_Amortized_doh_get extends CircuitGenerator {
   public UnsignedInteger left_index;
   public UnsignedInteger right_index;
 
+  public static final int MAX_DNS_CT_LEN = 500;
   @Override
   public void __defineInputs() {
     super.__defineInputs();
@@ -276,7 +286,7 @@ public class DNS_Amortized_doh_get extends CircuitGenerator {
     FieldElement comm_cal = PoseidonHash.poseidon_hash(new FieldElement[]{new FieldElement(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), new BigInteger("0")), FieldElement.instantiateFrom(new BigInteger("21888242871839275222246405745257275088548364400416034343698204186575808495617"), concat_256).copy()}).copy();
 
     // Verify that the two commitments are equal 
-    // comm.forceEqual(comm_cal);
+    comm.forceEqual(comm_cal);
 
     // Compute iv xor (0^32 || SN)  
     // this acts as the iv for this TLS record 
